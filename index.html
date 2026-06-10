@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ConectaMe — Rede Social</title>
+  <style>
+    /* ===== RESET & VARIÁVEIS ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:   #6c63ff;
+      --primary-d: #574fd6;
+      --secondary: #ff6584;
+      --bg:        #f0f2f5;
+      --card:      #ffffff;
+      --text:      #1a1a2e;
+      --muted:     #6b7280;
+      --border:    #e5e7eb;
+      --online:    #22c55e;
+      --radius:    12px;
+      --shadow:    0 2px 12px rgba(0,0,0,.08);
+      --transition: .25s ease;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+    input, textarea { font-family: inherit; outline: none; border: none; }
+
+    /* ===== TELA DE LOGIN ===== */
+    #login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #6c63ff 0%, #ff6584 100%);
+    }
+
+    .login-box {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.2);
+      text-align: center;
+    }
+
+    .login-box .logo {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .login-box .tagline {
+      color: var(--muted);
+      font-size: .9rem;
+      margin-bottom: 32px;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      font-size: .95rem;
+      margin-bottom: 14px;
+      transition: border-color var(--transition);
+    }
+
+    .login-box input:focus { border-color: var(--primary); }
+
+    .btn-primary {
+      width: 100%;
+      padding: 13px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 600;
+      transition: background var(--transition), transform var(--transition);
+    }
+
+    .btn-primary:hover { background: var(--primary-d); transform: translateY(-1px); }
+
+    .login-box .switch-link {
+      margin-top: 18px;
+      font-size: .88rem;
+      color: var(--muted);
+    }
+
+    .login-box .switch-link span {
+      color: var(--primary);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .login-box .switch-link span:hover { text-decoration: underline; }
+
+    /* ===== LAYOUT PRINCIPAL ===== */
+    #app { display: none; }
+
+    /* NAVBAR */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+    }
+
+    .navbar .brand {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .navbar .nav-icons {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .nav-icon-btn {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: background var(--transition);
+    }
+
+    .nav-icon-btn:hover { background: #e0e0ff; }
+
+    .badge {
+      position: absolute;
+      top: 2px; right: 2px;
+      background: var(--secondary);
+      color: #fff;
+      font-size: .6rem;
+      font-weight: 700;
+      border-radius: 50%;
+      width: 16px; height: 16px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .avatar-sm {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid var(--primary);
+    }
+
+    /* LAYOUT GRID */
+    .main-layout {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 260px 1fr 280px;
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .main-layout { grid-template-columns: 1fr; }
+      .sidebar-left, .sidebar-right { display: none; }
+    }
+
+    /* SIDEBAR ESQUERDA */
+    .sidebar-left { display: flex; flex-direction: column; gap: 12px; }
+
+    .profile-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .profile-card .cover {
+      height: 70px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+
+    .profile-card .info {
+      padding: 0 16px 16px;
+      text-align: center;
+    }
+
+    .profile-card .avatar-wrap {
+      margin-top: -28px;
+      margin-bottom: 8px;
+    }
+
+    .profile-card .avatar-wrap img {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      border: 3px solid var(--card);
+      object-fit: cover;
+    }
+
+    .profile-card .name { font-weight: 700; font-size: 1rem; }
+    .profile-card .handle { color: var(--muted); font-size: .82rem; margin-bottom: 10px; }
+
+    .profile-stats {
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-top: 4px;
+    }
+
+    .profile-stats .stat { text-align: center; }
+    .profile-stats .stat strong { display: block; font-size: 1rem; font-weight: 700; }
+    .profile-stats .stat span { font-size: .75rem; color: var(--muted); }
+
+    .menu-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 12px 0;
+      box-shadow: var(--shadow);
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 18px;
+      font-size: .92rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background var(--transition);
+      border-radius: 8px;
+      margin: 0 6px;
+    }
+
+    .menu-item:hover, .menu-item.active { background: #ede9ff; color: var(--primary); }
+    .menu-item .icon { font-size: 1.1rem; width: 22px; text-align: center; }
+
+    /* FEED CENTRAL */
+    .feed { display: flex; flex-direction: column; gap: 16px; }
+
+    /* CRIAR POST */
+    .create-post {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .create-post .top {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .create-post textarea {
+      flex: 1;
+      resize: none;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      font-size: .93rem;
+      min-height: 70px;
+      transition: border-color var(--transition);
+    }
+
+    .create-post textarea:focus { border-color: var(--primary); }
+
+    .create-post .actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .create-post .media-btns { display: flex; gap: 8px; }
+
+    .btn-media {
+      padding: 7px 14px;
+      border-radius: 20px;
+      background: var(--bg);
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--muted);
+      transition: background var(--transition), color var(--transition);
+    }
+
+    .btn-media:hover { background: #ede9ff; color: var(--primary); }
+
+    .btn-post {
+      padding: 8px 22px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 20px;
+      font-size: .88rem;
+      font-weight: 700;
+      transition: background var(--transition), transform var(--transition);
+    }
+
+    .btn-post:hover { background: var(--primary-d); transform: translateY(-1px); }
+
+    /* STORIES */
+    .stories-bar {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .stories-bar h4 { font-size: .8rem; color: var(--muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .05em; }
+
+    .stories-list { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 4px; }
+    .stories-list::-webkit-scrollbar { height: 4px; }
+    .stories-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .story-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .story-ring {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+
+    .story-ring img {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      border: 2px solid var(--card);
+      object-fit: cover;
+    }
+
+    .story-item span { font-size: .72rem; color: var(--muted); max-width: 60px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* POST CARD */
+    .post-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      animation: fadeIn .4s ease;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px 10px;
+    }
+
+    .post-header img {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .post-header .meta { flex: 1; }
+    .post-header .meta .uname { font-weight: 700; font-size: .93rem; }
+    .post-header .meta .time { font-size: .78rem; color: var(--muted); }
+
+    .post-header .more-btn {
+      background: none;
+      font-size: 1.2rem;
+      color: var(--muted);
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: background var(--transition);
+    }
+
+    .post-header .more-btn:hover { background: var(--bg); }
+
+    .post-body { padding: 0 16px 12px; font-size: .93rem; line-height: 1.6; }
+
+    .post-image {
+      width: 100%;
+      max-height: 380px;
+      object-fit: cover;
+    }
+
+    .post-actions {
+      display: flex;
+      gap: 4px;
+      padding: 8px 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .action-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px;
+      border-radius: 8px;
+      background: none;
+      font-size: .85rem;
+      color: var(--muted);
+      font-weight: 600;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    .action-btn:hover { background: var(--bg); color: var(--primary); }
+    .action-btn.liked { color: var(--secondary); }
+    .action-btn .icon { font-size: 1rem; }
+
+    /* COMENTÁRIOS */
+    .comments-section {
+      padding: 0 16px 14px;
+      display: none;
+    }
+
+    .comments-section.open { display: block; }
+
+    .comment-input-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .comment-input-row input {
+      flex: 1;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 7px 14px;
+      font-size: .85rem;
+      transition: border-color var(--transition);
+    }
+
+    .comment-input-row input:focus { border-color: var(--primary); }
+
+    .btn-send-comment {
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem;
+      transition: background var(--transition);
+    }
+
+    .btn-send-comment:hover { background: var(--primary-d); }
+
+    .comment-item {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      animation: fadeIn .3s ease;
+    }
+
+    .comment-item img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+
+    .comment-bubble {
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 7px 12px;
+      font-size: .84rem;
+    }
+
+    .comment-bubble .cname { font-weight: 700; font-size: .8rem; margin-bottom: 2px; }
+
+    /* SIDEBAR DIREITA */
+    .sidebar-right { display: flex; flex-direction: column; gap: 12px; }
+
+    .widget {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .widget h4 { font-size: .82rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 12px; }
+
+    /* SUGESTÕES */
+    .suggestion-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .suggestion-item img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+
+    .suggestion-item .sinfo { flex: 1; }
+    .suggestion-item .sname { font-weight: 600; font-size: .88rem; }
+    .suggestion-item .smutual { font-size: .75rem; color: var(--muted); }
+
+    .btn-follow {
+      padding: 5px 14px;
+      border-radius: 20px;
+      background: var(--primary);
+      color: #fff;
+      font-size: .78rem;
+      font-weight: 700;
+      transition: background var(--transition);
+    }
+
+    .btn-follow:hover { background: var(--primary-d); }
+    .btn-follow.following { background: var(--bg); color: var(--muted); }
+
+    /* TRENDING */
+    .trend-item { margin-bottom: 10px; cursor: pointer; }
+    .trend-item .tag { font-weight: 700; font-size: .88rem; color: var(--primary); }
+    .trend-item .count { font-size: .75rem; color: var(--muted); }
+
+    /* ONLINE FRIENDS */
+    .online-list { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .online-friend {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .online-friend img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; }
+
+    .online-dot {
+      position: absolute;
+      bottom: 1px; right: 1px;
+      width: 10px; height: 10px;
+      background: var(--online);
+      border-radius: 50%;
+      border: 2px solid var(--card);
+    }
+
+    /* NOTIFICAÇÕES TOAST */
+    #toast-container {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toast {
+      background: var(--text);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: var(--radius);
+      font-size: .88rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,.2);
+      animation: slideIn .3s ease;
+      max-width: 300px;
+    }
+
+    @keyframes slideIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+
+    /* MODAL PERFIL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal-box {
+      background: var(--card);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 500px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.3);
+      animation: fadeIn .3s ease;
+    }
+
+    .modal-cover {
+      height: 120px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+
+    .modal-info {
+      padding: 0 24px 24px;
+      text-align: center;
+    }
+
+    .modal-avatar {
+      margin-top: -40px;
+      margin-bottom: 10px;
+    }
+
+    .modal-avatar img {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      border: 4px solid var(--card);
+      object-fit: cover;
+    }
+
+    .modal-info h2 { font-size: 1.3rem; font-weight: 800; }
+    .modal-info .modal-handle { color: var(--muted); font-size: .88rem; margin-bottom: 8px; }
+    .modal-info .modal-bio { font-size: .9rem; color: var(--text); margin-bottom: 16px; }
+
+    .modal-stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 16px;
+    }
+
+    .modal-stats .mstat strong { display: block; font-size: 1.1rem; font-weight: 800; }
+    .modal-stats .mstat span { font-size: .78rem; color: var(--muted); }
+
+    .modal-close {
+      position: absolute;
+      top: 12px; right: 16px;
+      font-size: 1.4rem;
+      color: #fff;
+      background: rgba(0,0,0,.3);
+      border-radius: 50%;
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+
+    .modal-overlay { position: fixed; }
+    .modal-box { position: relative; }
+
+    /* SCROLLBAR GLOBAL */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- ===== TELA DE LOGIN ===== -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="logo">&#127758; ConectaMe</div>
+    <p class="tagline">Conecte-se com quem você ama</p>
+    <div id="login-form">
+      <input type="text" id="login-name" placeholder="Seu nome" maxlength="30" />
+      <input type="email" id="login-email" placeholder="E-mail" />
+      <input type="password" id="login-pass" placeholder="Senha" />
+      <button class="btn-primary" onclick="doLogin()">Entrar</button>
+      <p class="switch-link">Não tem conta? <span onclick="toggleForm()">Criar conta</span></p>
+    </div>
+    <div id="register-form" style="display:none">
+      <input type="text" id="reg-name" placeholder="Nome completo" maxlength="30" />
+      <input type="email" id="reg-email" placeholder="E-mail" />
+      <input type="password" id="reg-pass" placeholder="Senha (mín. 6 caracteres)" />
+      <button class="btn-primary" onclick="doRegister()">Criar conta</button>
+      <p class="switch-link">Já tem conta? <span onclick="toggleForm()">Entrar</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== APP PRINCIPAL ===== -->
+<div id="app">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="brand">&#127758; ConectaMe</div>
+    <div class="nav-icons">
+      <button class="nav-icon-btn" onclick="showToast('&#128276; Nenhuma notificação nova')">
+        &#128276;
+        <span class="badge" id="notif-badge">3</span>
+      </button>
+      <button class="nav-icon-btn" onclick="showToast('&#128172; Nenhuma mensagem nova')">
+        &#128172;
+        <span class="badge">1</span>
+      </button>
+      <img class="avatar-sm" id="nav-avatar" src="" alt="Perfil" onclick="openProfileModal(currentUser)" />
+    </div>
+  </nav>
+
+  <!-- LAYOUT -->
+  <div class="main-layout">
+
+    <!-- SIDEBAR ESQUERDA -->
+    <aside class="sidebar-left">
+      <div class="profile-card">
+        <div class="cover"></div>
+        <div class="info">
+          <div class="avatar-wrap">
+            <img id="sidebar-avatar" src="" alt="Avatar" />
+          </div>
+          <div class="name" id="sidebar-name">—</div>
+          <div class="handle" id="sidebar-handle">@—</div>
+          <div class="profile-stats">
+            <div class="stat"><strong id="stat-posts">0</strong><span>Posts</span></div>
+            <div class="stat"><strong id="stat-followers">0</strong><span>Seguidores</span></div>
+            <div class="stat"><strong id="stat-following">0</strong><span>Seguindo</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-card">
+        <div class="menu-item active" onclick="setMenu(this)"><span class="icon">&#127968;</span> Início</div>
+        <div class="menu-item" onclick="setMenu(this)"><span class="icon">&#128269;</span> Explorar</div>
+        <div class="menu-item" onclick="setMenu(this)"><span class="icon">&#128100;</span> Perfil</div>
+        <div class="menu-item" onclick="setMenu(this)"><span class="icon">&#128247;</span> Fotos</div>
+        <div class="menu-item" onclick="setMenu(this)"><span class="icon">&#128203;</span> Grupos</div>
+        <div class="menu-item" onclick="setMenu(this)"><span class="icon">&#9881;&#65039;</span> Configurações</div>
+        <div class="menu-item" onclick="logout()"><span class="icon">&#128682;</span> Sair</div>
+      </div>
+    </aside>
+
+    <!-- FEED CENTRAL -->
+    <main class="feed" id="feed">
+
+      <!-- STORIES -->
+      <div class="stories-bar">
+        <h4>Stories</h4>
+        <div class="stories-list" id="stories-list"></div>
+      </div>
+
+      <!-- CRIAR POST -->
+      <div class="create-post">
+        <div class="top">
+          <img class="avatar-sm" id="create-avatar" src="" alt="Você" />
+          <textarea id="post-text" placeholder="No que você está pensando?"></textarea>
+        </div>
+        <div class="actions">
+          <div class="media-btns">
+            <button class="btn-media" onclick="addEmoji()">&#128512; Emoji</button>
+            <button class="btn-media" onclick="addFakeImage()">&#128247; Foto</button>
+          </div>
+          <button class="btn-post" onclick="createPost()">Publicar</button>
+        </div>
+      </div>
+
+      <!-- POSTS SERÃO INSERIDOS AQUI -->
+      <div id="posts-container"></div>
+    </main>
+
+    <!-- SIDEBAR DIREITA -->
+    <aside class="sidebar-right">
+
+      <!-- SUGESTÕES -->
+      <div class="widget">
+        <h4>Sugestões para você</h4>
+        <div id="suggestions-list"></div>
+      </div>
+
+      <!-- TRENDING -->
+      <div class="widget">
+        <h4>Em alta agora</h4>
+        <div id="trending-list"></div>
+      </div>
+
+      <!-- ONLINE -->
+      <div class="widget">
+        <h4>Amigos online</h4>
+        <div class="online-list" id="online-list"></div>
+      </div>
+
+    </aside>
+  </div>
+</div>
+
+<!-- MODAL PERFIL -->
+<div class="modal-overlay" id="profile-modal">
+  <div class="modal-box">
+    <div class="modal-cover"></div>
+    <span class="modal-close" onclick="closeProfileModal()">&#10005;</span>
+    <div class="modal-info">
+      <div class="modal-avatar"><img id="modal-avatar-img" src="" alt="Avatar" /></div>
+      <h2 id="modal-name">—</h2>
+      <div class="modal-handle" id="modal-handle">@—</div>
+      <p class="modal-bio" id="modal-bio">—</p>
+      <div class="modal-stats">
+        <div class="mstat"><strong id="modal-posts">0</strong><span>Posts</span></div>
+        <div class="mstat"><strong id="modal-followers">0</strong><span>Seguidores</span></div>
+        <div class="mstat"><strong id="modal-following">0</strong><span>Seguindo</span></div>
+      </div>
+      <button class="btn-post" id="modal-follow-btn" onclick="toggleFollowModal()">Seguir</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<script>
+  // ===== DADOS INICIAIS =====
+  const AVATARS = [
+    'https://i.pravatar.cc/150?img=1',
+    'https://i.pravatar.cc/150?img=2',
+    'https://i.pravatar.cc/150?img=3',
+    'https://i.pravatar.cc/150?img=4',
+    'https://i.pravatar.cc/150?img=5',
+    'https://i.pravatar.cc/150?img=6',
+    'https://i.pravatar.cc/150?img=7',
+    'https://i.pravatar.cc/150?img=8',
+    'https://i.pravatar.cc/150?img=9',
+    'https://i.pravatar.cc/150?img=10',
+  ];
+
+  const FAKE_IMAGES = [
+    'https://picsum.photos/seed/post1/600/350',
+    'https://picsum.photos/seed/post2/600/350',
+    'https://picsum.photos/seed/post3/600/350',
+    'https://picsum.photos/seed/post4/600/350',
+    'https://picsum.photos/seed/post5/600/350',
+  ];
+
+  const EMOJIS = ['😂','😍','🔥','👏','💯','🎉','😎','🤩','💪','🙌','❤️','✨'];
+
+  const SAMPLE_USERS = [
+    { id: 2, name: 'Ana Lima',      handle: 'analima',    avatar: AVATARS[1], bio: 'Fotógrafa apaixonada 📷', posts: 48, followers: 1200, following: 340 },
+    { id: 3, name: 'Carlos Souza',  handle: 'carloss',    avatar: AVATARS[2], bio: 'Dev full-stack ☕',        posts: 92, followers: 870,  following: 210 },
+    { id: 4, name: 'Beatriz Nunes', handle: 'beanunes',   avatar: AVATARS[3], bio: 'Viajante do mundo 🌍',    posts: 134, followers: 3400, following: 500 },
+    { id: 5, name: 'Diego Martins', handle: 'diegom',     avatar: AVATARS[4], bio: 'Músico e compositor 🎸',  posts: 21, followers: 560,  following: 180 },
+    { id: 6, name: 'Fernanda Costa',handle: 'fercosta',   avatar: AVATARS[5], bio: 'Chef de cozinha 🍳',      posts: 77, followers: 2100, following: 420 },
+  ];
+
+  const SAMPLE_POSTS = [
+    { userId: 2, text: 'Que dia incrível para fotografar! A luz da tarde estava perfeita. 📷✨', image: FAKE_IMAGES[0], time: '2 horas atrás', likes: 47, comments: [] },
+    { userId: 3, text: 'Acabei de subir um projeto novo no GitHub! Muito orgulhoso do resultado 🚀 #dev #código', image: null, time: '4 horas atrás', likes: 83, comments: [] },
+    { userId: 4, text: 'Chegando em Lisboa! Essa cidade é simplesmente mágica 🇵🇹❤️', image: FAKE_IMAGES[1], time: '6 horas atrás', likes: 215, comments: [] },
+    { userId: 5, text: 'Nova música gravada! Em breve lançamento 🎸🎶 Aguardem!', image: null, time: '1 dia atrás', likes: 34, comments: [] },
+    { userId: 6, text: 'Receita de bolo de chocolate que fiz hoje. Ficou INCRÍVEL! 🍫🎂', image: FAKE_IMAGES[2], time: '1 dia atrás', likes: 128, comments: [] },
+  ];
+
+  const TRENDING = [
+    { tag: '#TechBrasil', count: '12.4k posts' },
+    { tag: '#FotografiaUrbana', count: '8.7k posts' },
+    { tag: '#MúsicaNacional', count: '6.2k posts' },
+    { tag: '#ViagensIncríveis', count: '5.1k posts' },
+    { tag: '#ReceitasFáceis', count: '4.8k posts' },
+  ];
+
+  // ===== ESTADO DA APP =====
+  let currentUser = null;
+  let posts = [];
+  let modalUser = null;
+  let followingSet = new Set();
+
+  // ===== LOGIN / REGISTRO =====
+  function toggleForm() {
+    const lf = document.getElementById('login-form');
+    const rf = document.getElementById('register-form');
+    lf.style.display = lf.style.display === 'none' ? 'block' : 'none';
+    rf.style.display = rf.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function doLogin() {
+    const name = document.getElementById('login-name').value.trim();
+    const email = document.getElementById('login-email').value.trim();
+    if (!name || !email) { showToast('⚠️ Preencha nome e e-mail!'); return; }
+    loginAs(name);
+  }
+
+  function doRegister() {
+    const name = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const pass = document.getElementById('reg-pass').value;
+    if (!name || !email) { showToast('⚠️ Preencha todos os campos!'); return; }
+    if (pass.length < 6) { showToast('⚠️ Senha muito curta!'); return; }
+    loginAs(name);
+  }
+
+  function loginAs(name) {
+    const avatarIdx = Math.floor(Math.random() * AVATARS.length);
+    currentUser = {
+      id: 1,
+      name: name,
+      handle: name.toLowerCase().replace(/\s+/g, ''),
+      avatar: AVATARS[avatarIdx],
+      bio: 'Novo membro do ConectaMe 🎉',
+      posts: 0,
+      followers: Math.floor(Math.random() * 200),
+      following: Math.floor(Math.random() * 100),
+    };
+    initApp();
+  }
+
+  function logout() {
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+    currentUser = null;
+    posts = [];
+    followingSet.clear();
+  }
+
+  // ===== INICIALIZAR APP =====
+  function initApp() {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+
+    // Atualizar UI com dados do usuário
+    const avatarEls = ['nav-avatar', 'sidebar-avatar', 'create-avatar'];
+    avatarEls.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.src = currentUser.avatar;
+    });
+
+    document.getElementById('sidebar-name').textContent = currentUser.name;
+    document.getElementById('sidebar-handle').textContent = '@' + currentUser.handle;
+    document.getElementById('stat-posts').textContent = currentUser.posts;
+    document.getElementById('stat-followers').textContent = currentUser.followers;
+    document.getElementById('stat-following').textContent = currentUser.following;
+
+    // Montar posts
+    posts = SAMPLE_POSTS.map((p, i) => ({
+      ...p,
+      id: i + 1,
+      liked: false,
+      likeCount: p.likes,
+      comments: [],
+    }));
+
+    renderPosts();
+    renderStories();
+    renderSuggestions();
+    renderTrending();
+    renderOnline();
+    showToast('👋 Bem-vindo(a), ' + currentUser.name + '!');
+  }
+
+  // ===== POSTS =====
+  function getUserById(id) {
+    return SAMPLE_USERS.find(u => u.id === id) || currentUser;
+  }
+
+  function renderPosts() {
+    const container = document.getElementById('posts-container');
+    container.innerHTML = '';
+    posts.forEach(post => {
+      container.insertAdjacentHTML('beforeend', buildPostHTML(post));
+    });
+  }
+
+  function buildPostHTML(post) {
+    const user = getUserById(post.userId);
+    const imgHTML = post.image ? `<img class="post-image" src="${post.image}" alt="Post" loading="lazy" />` : '';
+    const likedClass = post.liked ? 'liked' : '';
+    const likeIcon = post.liked ? '❤️' : '🤍';
+    return `
+      <div class="post-card" id="post-${post.id}">
+        <div class="post-header">
+          <img src="${user.avatar}" alt="${user.name}" onclick="openProfileModal(getUserById(${post.userId}))" style="cursor:pointer" />
+          <div class="meta">
+            <div class="uname" onclick="openProfileModal(getUserById(${post.userId}))" style="cursor:pointer">${user.name}</div>
+            <div class="time">${post.time}</div>
+          </div>
+          <button class="more-btn" onclick="showToast('⚙️ Opções em breve!')">•••</button>
+        </div>
+        <div class="post-body">${post.text}</div>
+        ${imgHTML}
+        <div class="post-actions">
+          <button class="action-btn ${likedClass}" onclick="toggleLike(${post.id})">
+            <span class="icon">${likeIcon}</span> ${post.likeCount}
+          </button>
+          <button class="action-btn" onclick="toggleComments(${post.id})">
+            <span class="icon">💬</span> ${post.comments.length}
+          </button>
+          <button class="action-btn" onclick="sharePost(${post.id})">
+            <span class="icon">🔗</span> Compartilhar
+          </button>
+        </div>
+        <div class="comments-section" id="comments-${post.id}">
+          <div class="comment-input-row">
+            <img src="${currentUser ? currentUser.avatar : ''}" alt="Você" style="width:30px;height:30px;border-radius:50%;object-fit:cover" />
+            <input type="text" id="comment-input-${post.id}" placeholder="Escreva um comentário..." onkeydown="if(event.key==='Enter') sendComment(${post.id})" />
+            <button class="btn-send-comment" onclick="sendComment(${post.id})">➤</button>
+          </div>
+          <div id="comment-list-${post.id}"></div>
+        </div>
+      </div>
+    `;
+  }
+
+  function toggleLike(postId) {
+    const post = posts.find(p => p.id === postId);
+    if (!post) return;
+    post.liked = !post.liked;
+    post.likeCount += post.liked ? 1 : -1;
+    const card = document.getElementById('post-' + postId);
+    const btn = card.querySelector('.action-btn');
+    btn.className = 'action-btn' + (post.liked ? ' liked' : '');
+    btn.innerHTML = `<span class="icon">${post.liked ? '❤️' : '🤍'}</span> ${post.likeCount}`;
+    if (post.liked) showToast('❤️ Você curtiu essa publicação!');
+  }
+
+  function toggleComments(postId) {
+    const section = document.getElementById('comments-' + postId);
+    section.classList.toggle('open');
+    if (section.classList.contains('open')) {
+      document.getElementById('comment-input-' + postId).focus();
+    }
+  }
+
+  function sendComment(postId) {
+    const input = document.getElementById('comment-input-' + postId);
+    const text = input.value.trim();
+    if (!text) return;
+    const post = posts.find(p => p.id === postId);
+    const comment = { user: currentUser, text };
+    post.comments.push(comment);
+    input.value = '';
+
+    const list = document.getElementById('comment-list-' + postId);
+    list.insertAdjacentHTML('beforeend', `
+      <div class="comment-item">
+        <img src="${currentUser.avatar}" alt="${currentUser.name}" />
+        <div class="comment-bubble">
+          <div class="cname">${currentUser.name}</div>
+          ${text}
+        </div>
+      </div>
+    `);
+
+    // Atualizar contador
+    const card = document.getElementById('post-' + postId);
+    const btns = card.querySelectorAll('.action-btn');
+    btns[1].innerHTML = `<span class="icon">💬</span> ${post.comments.length}`;
+  }
+
+  function sharePost(postId) {
+    showToast('🔗 Link copiado para a área de transferência!');
+  }
+
+  function createPost() {
+    const textarea = document.getElementById('post-text');
+    const text = textarea.value.trim();
+    if (!text) { showToast('⚠️ Escreva algo antes de publicar!'); return; }
+
+    const newPost = {
+      id: Date.now(),
+      userId: currentUser.id,
+      text,
+      image: null,
+      time: 'Agora mesmo',
+      liked: false,
+      likeCount: 0,
+      comments: [],
+    };
+
+    posts.unshift(newPost);
+    textarea.value = '';
+    currentUser.posts++;
+    document.getElementById('stat-posts').textContent = currentUser.posts;
+
+    const container = document.getElementById('posts-container');
+    container.insertAdjacentHTML('afterbegin', buildPostHTML(newPost));
+    showToast('✅ Publicação criada com sucesso!');
+  }
+
+  function addEmoji() {
+    const textarea = document.getElementById('post-text');
+    const emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+    textarea.value += emoji;
+    textarea.focus();
+  }
+
+  function addFakeImage() {
+    showToast('📷 Imagem adicionada ao post (simulado)!');
+    const textarea = document.getElementById('post-text');
+    if (!textarea.value.includes('[📷 Foto]')) textarea.value += ' [📷 Foto]';
+    textarea.focus();
+  }
+
+  // ===== STORIES =====
+  function renderStories() {
+    const list = document.getElementById('stories-list');
+    const users = [currentUser, ...SAMPLE_USERS];
+    list.innerHTML = users.map(u => `
+      <div class="story-item" onclick="showToast('📖 Story de ${u.name}')">
+        <div class="story-ring">
+          <img src="${u.avatar}" alt="${u.name}" />
+        </div>
+        <span>${u.id === 1 ? 'Seu story' : u.name.split(' ')[0]}</span>
+      </div>
+    `).join('');
+  }
+
+  // ===== SUGESTÕES =====
+  function renderSuggestions() {
+    const list = document.getElementById('suggestions-list');
+    list.innerHTML = SAMPLE_USERS.slice(0, 4).map(u => `
+      <div class="suggestion-item">
+        <img src="${u.avatar}" alt="${u.name}" onclick="openProfileModal(SAMPLE_USERS.find(x=>x.id===${u.id}))" style="cursor:pointer" />
+        <div class="sinfo">
+          <div class="sname">${u.name}</div>
+          <div class="smutual">${Math.floor(Math.random()*10)+1} amigos em comum</div>
+        </div>
+        <button class="btn-follow" id="follow-btn-${u.id}" onclick="toggleFollow(${u.id}, this)">${followingSet.has(u.id) ? 'Seguindo' : 'Seguir'}</button>
+      </div>
+    `).join('');
+  }
+
+  function toggleFollow(userId, btn) {
+    if (followingSet.has(userId)) {
+      followingSet.delete(userId);
+      btn.textContent = 'Seguir';
+      btn.classList.remove('following');
+      currentUser.following--;
+      showToast('➖ Você deixou de seguir esse usuário.');
+    } else {
+      followingSet.add(userId);
+      btn.textContent = 'Seguindo';
+      btn.classList.add('following');
+      currentUser.following++;
+      showToast('✅ Você está seguindo esse usuário!');
+    }
+    document.getElementById('stat-following').textContent = currentUser.following;
+  }
+
+  // ===== TRENDING =====
+  function renderTrending() {
+    const list = document.getElementById('trending-list');
+    list.innerHTML = TRENDING.map(t => `
+      <div class="trend-item" onclick="showToast('🔍 Explorando ${t.tag}')">
+        <div class="tag">${t.tag}</div>
+        <div class="count">${t.count}</div>
+      </div>
+    `).join('');
+  }
+
+  // ===== ONLINE =====
+  function renderOnline() {
+    const list = document.getElementById('online-list');
+    list.innerHTML = SAMPLE_USERS.map(u => `
+      <div class="online-friend" onclick="showToast('💬 Abrindo chat com ${u.name}...')" title="${u.name}">
+        <img src="${u.avatar}" alt="${u.name}" />
+        <span class="online-dot"></span>
+      </div>
+    `).join('');
+  }
+
+  // ===== MODAL PERFIL =====
+  function openProfileModal(user) {
+    if (!user) return;
+    modalUser = user;
+    document.getElementById('modal-avatar-img').src = user.avatar;
+    document.getElementById('modal-name').textContent = user.name;
+    document.getElementById('modal-handle').textContent = '@' + user.handle;
+    document.getElementById('modal-bio').textContent = user.bio || '—';
+    document.getElementById('modal-posts').textContent = user.posts;
+    document.getElementById('modal-followers').textContent = user.followers;
+    document.getElementById('modal-following').textContent = user.following;
+
+    const btn = document.getElementById('modal-follow-btn');
+    if (user.id === 1) {
+      btn.textContent = 'Editar Perfil';
+      btn.onclick = () => { showToast('✏️ Edição de perfil em breve!'); closeProfileModal(); };
+    } else {
+      const isFollowing = followingSet.has(user.id);
+      btn.textContent = isFollowing ? 'Seguindo' : 'Seguir';
+      btn.className = 'btn-post' + (isFollowing ? ' following' : '');
+    }
+
+    document.getElementById('profile-modal').classList.add('open');
+  }
+
+  function closeProfileModal() {
+    document.getElementById('profile-modal').classList.remove('open');
+    modalUser = null;
+  }
+
+  function toggleFollowModal() {
+    if (!modalUser || modalUser.id === 1) return;
+    const btn = document.getElementById('modal-follow-btn');
+    const followBtn = document.getElementById('follow-btn-' + modalUser.id);
+    if (followingSet.has(modalUser.id)) {
+      followingSet.delete(modalUser.id);
+      btn.textContent = 'Seguir';
+      btn.classList.remove('following');
+      if (followBtn) { followBtn.textContent = 'Seguir'; followBtn.classList.remove('following'); }
+      currentUser.following--;
+      showToast('➖ Você deixou de seguir ' + modalUser.name);
+    } else {
+      followingSet.add(modalUser.id);
+      btn.textContent = 'Seguindo';
+      btn.classList.add('following');
+      if (followBtn) { followBtn.textContent = 'Seguindo'; followBtn.classList.add('following'); }
+      currentUser.following++;
+      showToast('✅ Você está seguindo ' + modalUser.name + '!');
+    }
+    document.getElementById('stat-following').textContent = currentUser.following;
+  }
+
+  // Fechar modal clicando fora
+  document.getElementById('profile-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeProfileModal();
+  });
+
+  // ===== MENU =====
+  function setMenu(el) {
+    document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+    el.classList.add('active');
+    const label = el.textContent.trim();
+    if (!label.includes('Sair')) showToast('📂 Seção "' + label + '" selecionada');
+  }
+
+  // ===== TOAST =====
+  function showToast(msg) {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = msg;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transition = 'opacity .4s';
+      setTimeout(() => toast.remove(), 400);
+    }, 3000);
+  }
+
+  // ===== NOTIFICAÇÕES BADGE =====
+  document.getElementById('notif-badge').addEventListener('click', function() {
+    this.style.display = 'none';
+  });
+</script>
+</body>
+</html>
