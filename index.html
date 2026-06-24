@@ -3,21 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ConectaMe — Lux Edition</title>
+  <title>ConectaMe — Minimal Lux</title>
   <style>
-    /* ===== RESET & VARIÁVEIS (PRETO & DOURADO) ===== */
+    /* ===== RESET & VARIÁVEIS (PRETO & DOURADO - SEM IMAGENS) ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --primary:   #d4af37; /* Gold */
       --primary-d: #b8860b; /* Dark Gold */
-      --secondary: #fdf5e6; /* Old Lace (Soft Gold) */
       --bg:        #0a0a0a; /* Rich Black */
       --card:      #1a1a1a; /* Dark Grey/Black */
       --text:      #e0e0e0; /* Light Grey */
       --muted:     #8a8a8a; /* Muted Grey */
       --border:    #333333; /* Dark Border */
-      --online:    #d4af37; /* Gold for online */
       --radius:    12px;
       --shadow:    0 4px 20px rgba(0,0,0,.5);
       --transition: .25s ease;
@@ -30,9 +28,26 @@
       min-height: 100vh;
     }
 
-    a { text-decoration: none; color: inherit; }
     button { cursor: pointer; border: none; outline: none; font-family: inherit; }
     input, textarea { font-family: inherit; outline: none; border: none; color: var(--text); background: #222; }
+
+    /* ===== AVATAR PLACEHOLDER (SUBSTITUI <img>) ===== */
+    .avatar-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #222, #000);
+      color: var(--primary);
+      font-weight: 800;
+      border: 2px solid var(--primary);
+      border-radius: 50%;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .avatar-sm { width: 38px; height: 38px; font-size: .9rem; }
+    .avatar-md { width: 56px; height: 56px; font-size: 1.2rem; }
+    .avatar-lg { width: 80px; height: 80px; font-size: 1.8rem; }
 
     /* ===== TELA DE LOGIN ===== */
     #login-screen {
@@ -75,7 +90,6 @@
       border-radius: var(--radius);
       font-size: .95rem;
       margin-bottom: 14px;
-      transition: border-color var(--transition);
       background: #0f0f0f;
     }
 
@@ -89,29 +103,15 @@
       border-radius: var(--radius);
       font-size: 1rem;
       font-weight: 700;
-      transition: background var(--transition), transform var(--transition);
+      transition: background var(--transition);
     }
 
-    .btn-primary:hover { background: var(--primary-d); transform: translateY(-1px); }
+    .btn-primary:hover { background: var(--primary-d); }
 
-    .login-box .switch-link {
-      margin-top: 18px;
-      font-size: .88rem;
-      color: var(--muted);
-    }
+    .switch-link { margin-top: 18px; font-size: .88rem; color: var(--muted); }
+    .switch-link span { color: var(--primary); font-weight: 600; cursor: pointer; }
 
-    .login-box .switch-link span {
-      color: var(--primary);
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .login-box .switch-link span:hover { text-decoration: underline; }
-
-    /* ===== LAYOUT PRINCIPAL ===== */
-    #app { display: none; }
-
-    /* NAVBAR */
+    /* ===== NAVBAR ===== */
     .navbar {
       position: sticky;
       top: 0;
@@ -123,37 +123,21 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      box-shadow: var(--shadow);
     }
 
-    .navbar .brand {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--primary);
-    }
+    .navbar .brand { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
 
-    .navbar .nav-icons {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
+    .nav-icons { display: flex; gap: 12px; align-items: center; }
 
     .nav-icon-btn {
       position: relative;
-      width: 40px;
-      height: 40px;
+      width: 40px; height: 40px;
       border-radius: 50%;
       background: #1a1a1a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      transition: background var(--transition);
+      display: flex; align-items: center; justify-content: center;
       color: var(--primary);
       border: 1px solid var(--border);
     }
-
-    .nav-icon-btn:hover { background: #222; border-color: var(--primary); }
 
     .badge {
       position: absolute;
@@ -168,15 +152,7 @@
       border: 2px solid #000;
     }
 
-    .avatar-sm {
-      width: 38px; height: 38px;
-      border-radius: 50%;
-      object-fit: cover;
-      cursor: pointer;
-      border: 2px solid var(--primary);
-    }
-
-    /* LAYOUT GRID */
+    /* ===== LAYOUT ===== */
     .main-layout {
       max-width: 1100px;
       margin: 24px auto;
@@ -191,933 +167,312 @@
       .sidebar-left, .sidebar-right { display: none; }
     }
 
-    /* SIDEBAR ESQUERDA */
-    .sidebar-left { display: flex; flex-direction: column; gap: 12px; }
+    .sidebar-left, .sidebar-right { display: flex; flex-direction: column; gap: 12px; }
 
-    .profile-card {
+    /* CARDS */
+    .widget, .profile-card, .menu-card, .create-post, .post-card, .stories-bar {
       background: var(--card);
       border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: var(--shadow);
       border: 1px solid var(--border);
+      box-shadow: var(--shadow);
     }
 
-    .profile-card .cover {
-      height: 70px;
-      background: linear-gradient(135deg, #000, var(--primary-d));
-    }
+    .profile-card .cover { height: 70px; background: linear-gradient(135deg, #000, var(--primary-d)); }
+    .profile-card .info { padding: 0 16px 16px; text-align: center; }
+    .profile-card .avatar-wrap { margin-top: -28px; margin-bottom: 8px; display: flex; justify-content: center; }
+    .profile-card .name { font-weight: 700; color: #fff; }
+    .profile-card .handle { color: var(--primary); font-size: .82rem; }
 
-    .profile-card .info {
-      padding: 0 16px 16px;
-      text-align: center;
-    }
-
-    .profile-card .avatar-wrap {
-      margin-top: -28px;
-      margin-bottom: 8px;
-    }
-
-    .profile-card .avatar-wrap img {
-      width: 60px; height: 60px;
-      border-radius: 50%;
-      border: 3px solid var(--card);
-      object-fit: cover;
-      box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
-    }
-
-    .profile-card .name { font-weight: 700; font-size: 1rem; color: #fff; }
-    .profile-card .handle { color: var(--primary); font-size: .82rem; margin-bottom: 10px; }
-
-    .profile-stats {
-      display: flex;
-      justify-content: space-around;
-      border-top: 1px solid var(--border);
-      padding-top: 12px;
-      margin-top: 4px;
-    }
-
-    .profile-stats .stat { text-align: center; }
-    .profile-stats .stat strong { display: block; font-size: 1rem; font-weight: 700; color: var(--primary); }
+    .profile-stats { display: flex; justify-content: space-around; border-top: 1px solid var(--border); padding-top: 12px; margin-top: 8px; }
+    .profile-stats .stat strong { display: block; color: var(--primary); }
     .profile-stats .stat span { font-size: .75rem; color: var(--muted); }
 
-    .menu-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 12px 0;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-    }
-
     .menu-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 18px;
-      font-size: .92rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background var(--transition);
-      border-radius: 8px;
-      margin: 0 6px;
-      color: var(--text);
+      display: flex; align-items: center; gap: 12px; padding: 10px 18px;
+      font-size: .92rem; cursor: pointer; transition: background var(--transition);
+      border-radius: 8px; margin: 4px 6px; color: var(--text);
     }
-
     .menu-item:hover, .menu-item.active { background: #222; color: var(--primary); }
-    .menu-item .icon { font-size: 1.1rem; width: 22px; text-align: center; }
 
-    /* FEED CENTRAL */
+    /* FEED */
     .feed { display: flex; flex-direction: column; gap: 16px; }
 
-    /* CRIAR POST */
-    .create-post {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 16px;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-    }
+    .stories-bar { padding: 14px 16px; }
+    .stories-bar h4 { font-size: .8rem; color: var(--primary); margin-bottom: 12px; text-transform: uppercase; }
+    .stories-list { display: flex; gap: 12px; overflow-x: auto; }
+    .story-item { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; }
+    .story-ring { width: 58px; height: 58px; border-radius: 50%; padding: 2px; background: var(--primary); }
+    .story-item span { font-size: .72rem; color: var(--muted); }
 
-    .create-post .top {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      margin-bottom: 12px;
-    }
+    .create-post { padding: 16px; }
+    .create-post .top { display: flex; gap: 12px; margin-bottom: 12px; }
+    .create-post textarea { flex: 1; border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; min-height: 70px; background: #0f0f0f; }
+    .create-post .actions { display: flex; justify-content: space-between; align-items: center; }
+    .btn-media { padding: 7px 14px; border-radius: 20px; background: #222; color: var(--primary); border: 1px solid var(--border); font-size: .82rem; }
+    .btn-post { padding: 8px 22px; background: var(--primary); color: #000; border-radius: 20px; font-weight: 700; }
 
-    .create-post textarea {
-      flex: 1;
-      resize: none;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 10px 14px;
-      font-size: .93rem;
-      min-height: 70px;
-      transition: border-color var(--transition);
-      background: #0f0f0f;
-    }
-
-    .create-post textarea:focus { border-color: var(--primary); }
-
-    .create-post .actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .create-post .media-btns { display: flex; gap: 8px; }
-
-    .btn-media {
-      padding: 7px 14px;
-      border-radius: 20px;
-      background: #222;
-      font-size: .82rem;
-      font-weight: 600;
-      color: var(--primary);
-      transition: background var(--transition), color var(--transition);
-      border: 1px solid var(--border);
-    }
-
-    .btn-media:hover { background: #333; border-color: var(--primary); }
-
-    .btn-post {
-      padding: 8px 22px;
-      background: var(--primary);
-      color: #000;
-      border-radius: 20px;
-      font-size: .88rem;
-      font-weight: 700;
-      transition: background var(--transition), transform var(--transition);
-    }
-
-    .btn-post:hover { background: var(--primary-d); transform: translateY(-1px); }
-
-    /* STORIES */
-    .stories-bar {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 14px 16px;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-    }
-
-    .stories-bar h4 { font-size: .8rem; color: var(--primary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .05em; }
-
-    .stories-list { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 4px; }
-    .stories-list::-webkit-scrollbar { height: 4px; }
-    .stories-list::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 2px; }
-
-    .story-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    .story-ring {
-      width: 58px; height: 58px;
-      border-radius: 50%;
-      padding: 2px;
-      background: linear-gradient(135deg, var(--primary), #fff);
-    }
-
-    .story-ring img {
-      width: 100%; height: 100%;
-      border-radius: 50%;
-      border: 2px solid #000;
-      object-fit: cover;
-    }
-
-    .story-item span { font-size: .72rem; color: var(--muted); max-width: 60px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-    /* POST CARD */
-    .post-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      animation: fadeIn .4s ease;
-      border: 1px solid var(--border);
-    }
-
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    .post-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 16px 10px;
-    }
-
-    .post-header img {
-      width: 42px; height: 42px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1px solid var(--primary);
-    }
-
+    /* POSTS */
+    .post-header { display: flex; align-items: center; gap: 10px; padding: 14px 16px 10px; }
     .post-header .meta { flex: 1; }
-    .post-header .meta .uname { font-weight: 700; font-size: .93rem; color: #fff; }
+    .post-header .meta .uname { font-weight: 700; color: #fff; }
     .post-header .meta .time { font-size: .78rem; color: var(--muted); }
-
-    .post-header .more-btn {
-      background: none;
-      font-size: 1.2rem;
-      color: var(--muted);
-      padding: 4px 8px;
-      border-radius: 6px;
-      transition: background var(--transition);
-    }
-
-    .post-header .more-btn:hover { background: #222; color: var(--primary); }
-
-    .post-body { padding: 0 16px 12px; font-size: .93rem; line-height: 1.6; color: #e0e0e0; }
-
-    .post-image {
-      width: 100%;
-      max-height: 400px;
-      object-fit: cover;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .post-actions {
-      display: flex;
-      gap: 4px;
-      padding: 8px 12px;
-      border-top: 1px solid var(--border);
-    }
-
-    .action-btn {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 8px;
-      border-radius: 8px;
-      background: none;
-      font-size: .85rem;
-      color: var(--muted);
-      font-weight: 600;
-      transition: background var(--transition), color var(--transition);
-    }
-
-    .action-btn:hover { background: #222; color: var(--primary); }
-    .action-btn.liked { color: var(--primary); }
-    .action-btn .icon { font-size: 1rem; }
-
-    /* COMENTÁRIOS */
-    .comments-section {
-      padding: 0 16px 14px;
-      display: none;
-      border-top: 1px solid var(--border);
-      background: #151515;
-    }
-
-    .comments-section.open { display: block; }
-
-    .comment-input-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 12px;
-      margin-bottom: 12px;
-    }
-
-    .comment-input-row input {
-      flex: 1;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 7px 14px;
-      font-size: .85rem;
-      transition: border-color var(--transition);
-      background: #000;
-    }
-
-    .comment-input-row input:focus { border-color: var(--primary); }
-
-    .btn-send-comment {
-      background: var(--primary);
-      color: #000;
-      border-radius: 50%;
-      width: 32px; height: 32px;
+    .post-body { padding: 0 16px 12px; font-size: .93rem; line-height: 1.6; }
+    
+    /* NO IMAGE POST PLACEHOLDER */
+    .post-visual-placeholder {
+      height: 200px;
+      background: repeating-linear-gradient(45deg, #1a1a1a, #1a1a1a 10px, #222 10px, #222 20px);
       display: flex; align-items: center; justify-content: center;
-      font-size: .9rem;
-      transition: background var(--transition);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      color: var(--primary); font-size: 3rem; opacity: 0.5;
     }
 
-    .btn-send-comment:hover { background: var(--primary-d); }
+    .post-actions { display: flex; gap: 4px; padding: 8px 12px; border-top: 1px solid var(--border); }
+    .action-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px; background: none; color: var(--muted); font-weight: 600; font-size: .85rem; }
+    .action-btn:hover { color: var(--primary); }
+    .action-btn.liked { color: var(--primary); }
 
-    .comment-item {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 10px;
-      animation: fadeIn .3s ease;
-    }
-
-    .comment-item img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 1px solid var(--primary); }
-
-    .comment-bubble {
-      background: #222;
-      border-radius: 12px;
-      padding: 7px 12px;
-      font-size: .84rem;
-      border: 1px solid #333;
-    }
-
-    .comment-bubble .cname { font-weight: 700; font-size: .8rem; margin-bottom: 2px; color: var(--primary); }
-
-    /* SIDEBAR DIREITA */
-    .sidebar-right { display: flex; flex-direction: column; gap: 12px; }
-
-    .widget {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 16px;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-    }
-
-    .widget h4 { font-size: .82rem; color: var(--primary); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 12px; }
-
-    /* SUGESTÕES */
-    .suggestion-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .suggestion-item img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); }
-
+    /* WIDGETS */
+    .widget { padding: 16px; }
+    .widget h4 { font-size: .82rem; color: var(--primary); text-transform: uppercase; margin-bottom: 12px; }
+    .suggestion-item { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     .suggestion-item .sinfo { flex: 1; }
     .suggestion-item .sname { font-weight: 600; font-size: .88rem; color: #fff; }
     .suggestion-item .smutual { font-size: .75rem; color: var(--muted); }
+    .btn-follow { padding: 5px 14px; border-radius: 20px; background: var(--primary); color: #000; font-size: .78rem; font-weight: 700; }
 
-    .btn-follow {
-      padding: 5px 14px;
-      border-radius: 20px;
-      background: var(--primary);
-      color: #000;
-      font-size: .78rem;
-      font-weight: 700;
-      transition: background var(--transition);
-    }
-
-    .btn-follow:hover { background: var(--primary-d); }
-    .btn-follow.following { background: #222; color: var(--primary); border: 1px solid var(--primary); }
-
-    /* TRENDING */
-    .trend-item { margin-bottom: 10px; cursor: pointer; }
-    .trend-item .tag { font-weight: 700; font-size: .88rem; color: var(--primary); }
-    .trend-item .count { font-size: .75rem; color: var(--muted); }
-
-    /* ONLINE FRIENDS */
     .online-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .online-friend { position: relative; }
+    .online-dot { position: absolute; bottom: 1px; right: 1px; width: 10px; height: 10px; background: var(--primary); border-radius: 50%; border: 2px solid #000; }
 
-    .online-friend {
-      position: relative;
-      cursor: pointer;
-    }
-
-    .online-friend img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); }
-
-    .online-dot {
-      position: absolute;
-      bottom: 1px; right: 1px;
-      width: 10px; height: 10px;
-      background: var(--primary);
-      border-radius: 50%;
-      border: 2px solid #000;
-      box-shadow: 0 0 5px var(--primary);
-    }
-
-    /* NOTIFICAÇÕES TOAST */
-    #toast-container {
-      position: fixed;
-      bottom: 24px; right: 24px;
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .toast {
-      background: var(--primary);
-      color: #000;
-      padding: 12px 18px;
-      border-radius: var(--radius);
-      font-size: .88rem;
-      font-weight: 600;
-      box-shadow: 0 4px 20px rgba(0,0,0,.5);
-      animation: slideIn .3s ease;
-      max-width: 300px;
-    }
-
+    /* TOAST */
+    #toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+    .toast { background: var(--primary); color: #000; padding: 12px 18px; border-radius: var(--radius); font-weight: 600; box-shadow: 0 4px 20px rgba(0,0,0,.5); animation: slideIn .3s ease; }
     @keyframes slideIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
 
-    /* MODAL PERFIL */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.85);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-    }
-
+    /* MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.9); z-index: 200; align-items: center; justify-content: center; }
     .modal-overlay.open { display: flex; }
-
-    .modal-box {
-      background: var(--card);
-      border-radius: 20px;
-      width: 100%;
-      max-width: 500px;
-      overflow: hidden;
-      box-shadow: 0 0 60px rgba(212, 175, 55, 0.2);
-      animation: fadeIn .3s ease;
-      border: 1px solid var(--border);
-      position: relative;
-    }
-
-    .modal-cover {
-      height: 120px;
-      background: linear-gradient(135deg, #000, var(--primary-d));
-    }
-
-    .modal-info {
-      padding: 0 24px 24px;
-      text-align: center;
-    }
-
-    .modal-avatar {
-      margin-top: -40px;
-      margin-bottom: 10px;
-    }
-
-    .modal-avatar img {
-      width: 80px; height: 80px;
-      border-radius: 50%;
-      border: 4px solid var(--card);
-      object-fit: cover;
-      box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-    }
-
-    .modal-info h2 { font-size: 1.3rem; font-weight: 800; color: #fff; }
-    .modal-info .modal-handle { color: var(--primary); font-size: .88rem; margin-bottom: 8px; }
-    .modal-info .modal-bio { font-size: .9rem; color: var(--text); margin-bottom: 16px; }
-
-    .modal-stats {
-      display: flex;
-      justify-content: center;
-      gap: 32px;
-      margin-bottom: 16px;
-    }
-
-    .modal-stats .mstat strong { display: block; font-size: 1.1rem; font-weight: 800; color: var(--primary); }
-    .modal-stats .mstat span { font-size: .78rem; color: var(--muted); }
-
-    .modal-close {
-      position: absolute;
-      top: 12px; right: 16px;
-      font-size: 1.4rem;
-      color: #fff;
-      background: rgba(0,0,0,.5);
-      border-radius: 50%;
-      width: 32px; height: 32px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      border: 1px solid var(--border);
-    }
-
-    .modal-close:hover { color: var(--primary); border-color: var(--primary); }
-
-    /* SCROLLBAR GLOBAL */
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #000; }
-    ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+    .modal-box { background: var(--card); border-radius: 20px; width: 100%; max-width: 500px; border: 1px solid var(--border); text-align: center; overflow: hidden; }
+    .modal-cover { height: 100px; background: linear-gradient(135deg, #000, var(--primary-d)); }
+    .modal-info { padding: 0 24px 24px; margin-top: -40px; }
+    .modal-info h2 { color: #fff; margin-top: 10px; }
+    .modal-info .modal-handle { color: var(--primary); margin-bottom: 10px; }
+    .modal-close { position: absolute; top: 20px; right: 20px; color: #fff; cursor: pointer; font-size: 1.5rem; }
   </style>
 </head>
 <body>
 
-<!-- ===== TELA DE LOGIN ===== -->
 <div id="login-screen">
   <div class="login-box">
     <div class="logo">&#127758; ConectaMe</div>
-    <p class="tagline">Lux Edition — Conecte-se com elegância</p>
+    <p class="tagline">Pure Gold Edition — Sem distrações visuais</p>
     <div id="login-form">
-      <input type="text" id="login-name" placeholder="Seu nome" maxlength="30" />
-      <input type="email" id="login-email" placeholder="E-mail" />
-      <input type="password" id="login-pass" placeholder="Senha" />
-      <button class="btn-primary" onclick="doLogin()">Entrar</button>
-      <p class="switch-link">Não tem conta? <span onclick="toggleForm()">Criar conta</span></p>
-    </div>
-    <div id="register-form" style="display:none">
-      <input type="text" id="reg-name" placeholder="Nome completo" maxlength="30" />
-      <input type="email" id="reg-email" placeholder="E-mail" />
-      <input type="password" id="reg-pass" placeholder="Senha (mín. 6 caracteres)" />
-      <button class="btn-primary" onclick="doRegister()">Criar conta</button>
-      <p class="switch-link">Já tem conta? <span onclick="toggleForm()">Entrar</span></p>
+      <input type="text" id="login-name" placeholder="Seu nome" maxlength="20" />
+      <button class="btn-primary" onclick="doLogin()">Entrar no Luxo</button>
+      <p class="switch-link">Acesso restrito à elite</p>
     </div>
   </div>
 </div>
 
-<!-- ===== APP PRINCIPAL ===== -->
-<div id="app">
-
-  <!-- NAVBAR -->
+<div id="app" style="display:none">
   <nav class="navbar">
-    <div class="brand">&#127758; ConectaMe</div>
+    <div class="brand">ConectaMe</div>
     <div class="nav-icons">
-      <button class="nav-icon-btn" onclick="showToast('&#128276; Nenhuma notificação nova')">
-        &#128276;
-        <span class="badge" id="notif-badge">3</span>
-      </button>
-      <button class="nav-icon-btn" onclick="showToast('&#128172; Nenhuma mensagem nova')">
-        &#128172;
-        <span class="badge">1</span>
-      </button>
-      <img class="avatar-sm" id="nav-avatar" src="" alt="Perfil" onclick="openProfileModal(currentUser)" />
+      <div class="nav-icon-btn">&#128276;<span class="badge">2</span></div>
+      <div id="nav-avatar-container"></div>
     </div>
   </nav>
 
-  <!-- LAYOUT -->
   <div class="main-layout">
-
-    <!-- SIDEBAR ESQUERDA -->
     <aside class="sidebar-left">
       <div class="profile-card">
         <div class="cover"></div>
         <div class="info">
-          <div class="avatar-wrap">
-            <img id="sidebar-avatar" src="" alt="Avatar" />
-          </div>
-          <div class="name" id="sidebar-name">—</div>
-          <div class="handle" id="sidebar-handle">@—</div>
+          <div class="avatar-wrap" id="sidebar-avatar-container"></div>
+          <div class="name" id="sidebar-name">Usuário</div>
+          <div class="handle" id="sidebar-handle">@user</div>
           <div class="profile-stats">
-            <div class="stat"><strong id="stat-posts">0</strong><span>Posts</span></div>
-            <div class="stat"><strong id="stat-followers">0</strong><span>Seguidores</span></div>
-            <div class="stat"><strong id="stat-following">0</strong><span>Seguindo</span></div>
+            <div class="stat"><strong>12</strong><span>Posts</span></div>
+            <div class="stat"><strong>850</strong><span>Fãs</span></div>
           </div>
         </div>
       </div>
-
       <div class="menu-card">
-        <div class="menu-item active" onclick="setMenu(this)"><span class="icon">&#127968;</span> Início</div>
-        <div class="menu-item" onclick="setMenu(this)"><span class="icon">&#128269;</span> Explorar</div>
-        <div class="menu-item" onclick="setMenu(this)"><span class="icon">&#128100;</span> Perfil</div>
-        <div class="menu-item" onclick="setMenu(this)"><span class="icon">&#128247;</span> Fotos</div>
-        <div class="menu-item" onclick="setMenu(this)"><span class="icon">&#128203;</span> Grupos</div>
-        <div class="menu-item" onclick="setMenu(this)"><span class="icon">&#9881;&#65039;</span> Configurações</div>
-        <div class="menu-item" onclick="logout()"><span class="icon">&#128682;</span> Sair</div>
+        <div class="menu-item active">&#127968; Início</div>
+        <div class="menu-item">&#128100; Perfil</div>
+        <div class="menu-item" onclick="location.reload()">&#128682; Sair</div>
       </div>
     </aside>
 
-    <!-- FEED CENTRAL -->
-    <main class="feed" id="feed">
-
-      <!-- STORIES -->
+    <main class="feed">
       <div class="stories-bar">
-        <h4>Stories</h4>
+        <h4>Círculo Dourado</h4>
         <div class="stories-list" id="stories-list"></div>
       </div>
 
-      <!-- CRIAR POST -->
       <div class="create-post">
         <div class="top">
-          <img class="avatar-sm" id="create-avatar" src="" alt="Você" />
-          <textarea id="post-text" placeholder="O que você quer compartilhar com o mundo?"></textarea>
+          <div id="create-avatar-container"></div>
+          <textarea id="post-text" placeholder="Qual sua mensagem para a elite?"></textarea>
         </div>
         <div class="actions">
-          <div class="media-btns">
-            <button class="btn-media" onclick="addEmoji()">&#128512; Emoji</button>
-            <button class="btn-media" onclick="addFakeImage()">&#128247; Foto</button>
-          </div>
+          <button class="btn-media" onclick="addEmoji()">✨ Emoji</button>
           <button class="btn-post" onclick="createPost()">Publicar</button>
         </div>
       </div>
 
-      <!-- POSTS SERÃO INSERIDOS AQUI -->
       <div id="posts-container"></div>
     </main>
 
-    <!-- SIDEBAR DIREITA -->
     <aside class="sidebar-right">
-
-      <!-- SUGESTÕES -->
       <div class="widget">
-        <h4>Sugestões para você</h4>
+        <h4>Recomendações</h4>
         <div id="suggestions-list"></div>
       </div>
-
-      <!-- TRENDING -->
       <div class="widget">
-        <h4>Em alta agora</h4>
-        <div id="trending-list"></div>
-      </div>
-
-      <!-- ONLINE -->
-      <div class="widget">
-        <h4>Amigos online</h4>
+        <h4>Membros Online</h4>
         <div class="online-list" id="online-list"></div>
       </div>
-
     </aside>
   </div>
 </div>
 
-<!-- MODAL PERFIL -->
 <div class="modal-overlay" id="profile-modal">
   <div class="modal-box">
     <div class="modal-cover"></div>
-    <span class="modal-close" onclick="closeProfileModal()">&#10005;</span>
     <div class="modal-info">
-      <div class="modal-avatar"><img id="modal-avatar-img" src="" alt="Avatar" /></div>
-      <h2 id="modal-name">—</h2>
-      <div class="modal-handle" id="modal-handle">@—</div>
-      <p class="modal-bio" id="modal-bio">—</p>
-      <div class="modal-stats">
-        <div class="mstat"><strong id="modal-posts">0</strong><span>Posts</span></div>
-        <div class="mstat"><strong id="modal-followers">0</strong><span>Seguidores</span></div>
-        <div class="mstat"><strong id="modal-following">0</strong><span>Seguindo</span></div>
-      </div>
-      <button class="btn-post" id="modal-follow-btn" onclick="toggleFollowModal()">Seguir</button>
+      <div id="modal-avatar-container"></div>
+      <h2 id="modal-name">Nome</h2>
+      <p class="modal-handle" id="modal-handle">@handle</p>
+      <button class="btn-primary" onclick="closeModal()">Fechar</button>
     </div>
   </div>
 </div>
 
-<!-- TOAST CONTAINER -->
 <div id="toast-container"></div>
 
 <script>
-  // Os mesmos scripts da versão anterior, mantendo a funcionalidade
-  const AVATARS = [
-    'https://i.pravatar.cc/150?img=1', 'https://i.pravatar.cc/150?img=2',
-    'https://i.pravatar.cc/150?img=3', 'https://i.pravatar.cc/150?img=4',
-    'https://i.pravatar.cc/150?img=5', 'https://i.pravatar.cc/150?img=6',
-    'https://i.pravatar.cc/150?img=7', 'https://i.pravatar.cc/150?img=8',
-    'https://i.pravatar.cc/150?img=9', 'https://i.pravatar.cc/150?img=10',
-  ];
-
-  const FAKE_IMAGES = [
-    'https://picsum.photos/seed/lux1/600/350',
-    'https://picsum.photos/seed/lux2/600/350',
-    'https://picsum.photos/seed/lux3/600/350',
-    'https://picsum.photos/seed/lux4/600/350',
-    'https://picsum.photos/seed/lux5/600/350',
-  ];
-
-  const EMOJIS = ['✨','💎','🔥','👑','💰','🥂','🌟','🚀','🖤','🦁'];
-
-  const SAMPLE_USERS = [
-    { id: 2, name: 'Ana Lima',      handle: 'analima',    avatar: AVATARS[1], bio: 'Fotógrafa apaixonada 📷', posts: 48, followers: 1200, following: 340 },
-    { id: 3, name: 'Carlos Souza',  handle: 'carloss',    avatar: AVATARS[2], bio: 'Dev full-stack ☕',        posts: 92, followers: 870,  following: 210 },
-    { id: 4, name: 'Beatriz Nunes', handle: 'beanunes',   avatar: AVATARS[3], bio: 'Viajante do mundo 🌍',    posts: 134, followers: 3400, following: 500 },
-    { id: 5, name: 'Diego Martins', handle: 'diegom',     avatar: AVATARS[4], bio: 'Músico e compositor 🎸',  posts: 21, followers: 560,  following: 180 },
-    { id: 6, name: 'Fernanda Costa',handle: 'fercosta',   avatar: AVATARS[5], bio: 'Chef de cozinha 🍳',      posts: 77, followers: 2100, following: 420 },
-  ];
-
-  const SAMPLE_POSTS = [
-    { userId: 2, text: 'A elegância está nos detalhes. ✨ #LuxuryLife #Photography', image: FAKE_IMAGES[0], time: '2 horas atrás', likes: 147, comments: [] },
-    { userId: 3, text: 'Codar em modo dark é outro nível. Ouro no código! 💻💎', image: null, time: '4 horas atrás', likes: 83, comments: [] },
-    { userId: 4, text: 'Noite de gala em Paris. Inesquecível. 🥂🇫🇷', image: FAKE_IMAGES[1], time: '6 horas atrás', likes: 415, comments: [] },
-    { userId: 6, text: 'Trufas negras para o jantar de hoje. Simplesmente divino. 🍳🖤', image: FAKE_IMAGES[2], time: '1 dia atrás', likes: 128, comments: [] },
-  ];
-
-  const TRENDING = [
-    { tag: '#LuxEdition', count: '50.2k posts' },
-    { tag: '#GoldenVibes', count: '18.7k posts' },
-    { tag: '#BlackAndGold', count: '12.4k posts' },
-    { tag: '#ConectaMe', count: '8.1k posts' },
-  ];
-
   let currentUser = null;
-  let posts = [];
-  let modalUser = null;
-  let followingSet = new Set();
+  const USERS = [
+    { name: 'Ana Silva', handle: 'anasilva', initial: 'A' },
+    { name: 'Bruno Lux', handle: 'bruno', initial: 'B' },
+    { name: 'Carla Ouro', handle: 'carla', initial: 'C' },
+    { name: 'David Gold', handle: 'david', initial: 'D' }
+  ];
 
-  function toggleForm() {
-    const lf = document.getElementById('login-form');
-    const rf = document.getElementById('register-form');
-    lf.style.display = lf.style.display === 'none' ? 'block' : 'none';
-    rf.style.display = rf.style.display === 'none' ? 'block' : 'none';
+  function createAvatarHTML(initial, sizeClass = 'avatar-sm') {
+    return `<div class="avatar-placeholder ${sizeClass}">${initial}</div>`;
   }
 
   function doLogin() {
-    const name = document.getElementById('login-name').value.trim();
-    if (!name) { showToast('⚠️ Digite seu nome!'); return; }
-    loginAs(name);
-  }
-
-  function doRegister() {
-    const name = document.getElementById('reg-name').value.trim();
-    if (!name) { showToast('⚠️ Digite seu nome!'); return; }
-    loginAs(name);
-  }
-
-  function loginAs(name) {
-    const avatarIdx = Math.floor(Math.random() * AVATARS.length);
-    currentUser = {
-      id: 1, name: name, handle: name.toLowerCase().replace(/\s+/g, ''),
-      avatar: AVATARS[avatarIdx], bio: 'Apreciando o melhor da vida ✨',
-      posts: 0, followers: 150, following: 85,
-    };
-    initApp();
-  }
-
-  function logout() {
-    document.getElementById('app').style.display = 'none';
-    document.getElementById('login-screen').style.display = 'flex';
-    currentUser = null;
-  }
-
-  function initApp() {
+    const name = document.getElementById('login-name').value || 'Convidado';
+    currentUser = { name, handle: name.toLowerCase().replace(/ /g, ''), initial: name[0] };
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
+    
+    document.getElementById('nav-avatar-container').innerHTML = createAvatarHTML(currentUser.initial);
+    document.getElementById('sidebar-avatar-container').innerHTML = createAvatarHTML(currentUser.initial, 'avatar-md');
+    document.getElementById('create-avatar-container').innerHTML = createAvatarHTML(currentUser.initial);
+    document.getElementById('sidebar-name').innerText = currentUser.name;
+    document.getElementById('sidebar-handle').innerText = '@' + currentUser.handle;
+    
+    renderAll();
+    showToast('✨ Bem-vindo ao Círculo Dourado');
+  }
 
-    const avatarEls = ['nav-avatar', 'sidebar-avatar', 'create-avatar'];
-    avatarEls.forEach(id => { if (document.getElementById(id)) document.getElementById(id).src = currentUser.avatar; });
-
-    document.getElementById('sidebar-name').textContent = currentUser.name;
-    document.getElementById('sidebar-handle').textContent = '@' + currentUser.handle;
-    document.getElementById('stat-posts').textContent = currentUser.posts;
-    document.getElementById('stat-followers').textContent = currentUser.followers;
-    document.getElementById('stat-following').textContent = currentUser.following;
-
-    posts = SAMPLE_POSTS.map((p, i) => ({ ...p, id: i + 1, liked: false, likeCount: p.likes, comments: [] }));
-
-    renderPosts();
+  function renderAll() {
     renderStories();
     renderSuggestions();
-    renderTrending();
     renderOnline();
-    showToast('👑 Bem-vindo à Lux Edition, ' + currentUser.name + '!');
-  }
-
-  function getUserById(id) { return SAMPLE_USERS.find(u => u.id === id) || currentUser; }
-
-  function renderPosts() {
-    const container = document.getElementById('posts-container');
-    container.innerHTML = '';
-    posts.forEach(post => { container.insertAdjacentHTML('beforeend', buildPostHTML(post)); });
-  }
-
-  function buildPostHTML(post) {
-    const user = getUserById(post.userId);
-    const imgHTML = post.image ? `<img class="post-image" src="${post.image}" alt="Post" loading="lazy" />` : '';
-    const likedClass = post.liked ? 'liked' : '';
-    return `
-      <div class="post-card" id="post-${post.id}">
-        <div class="post-header">
-          <img src="${user.avatar}" alt="${user.name}" onclick="openProfileModal(getUserById(${post.userId}))" style="cursor:pointer" />
-          <div class="meta">
-            <div class="uname" onclick="openProfileModal(getUserById(${post.userId}))" style="cursor:pointer">${user.name}</div>
-            <div class="time">${post.time}</div>
-          </div>
-          <button class="more-btn" onclick="showToast('⚙️ Opções')">•••</button>
-        </div>
-        <div class="post-body">${post.text}</div>
-        ${imgHTML}
-        <div class="post-actions">
-          <button class="action-btn ${likedClass}" onclick="toggleLike(${post.id})">
-            <span class="icon">${post.liked ? '❤️' : '🤍'}</span> ${post.likeCount}
-          </button>
-          <button class="action-btn" onclick="toggleComments(${post.id})">
-            <span class="icon">💬</span> ${post.comments.length}
-          </button>
-          <button class="action-btn" onclick="showToast('🔗 Link copiado!')">
-            <span class="icon">🔗</span>
-          </button>
-        </div>
-        <div class="comments-section" id="comments-${post.id}">
-          <div class="comment-input-row">
-            <input type="text" id="comment-input-${post.id}" placeholder="Escreva um comentário..." onkeydown="if(event.key==='Enter') sendComment(${post.id})" />
-            <button class="btn-send-comment" onclick="sendComment(${post.id})">➤</button>
-          </div>
-          <div id="comment-list-${post.id}"></div>
-        </div>
-      </div>
-    `;
-  }
-
-  function toggleLike(postId) {
-    const post = posts.find(p => p.id === postId);
-    post.liked = !post.liked;
-    post.likeCount += post.liked ? 1 : -1;
     renderPosts();
-    if (post.liked) showToast('💎 Você curtiu isso!');
   }
-
-  function toggleComments(postId) {
-    const section = document.getElementById('comments-' + postId);
-    section.classList.toggle('open');
-  }
-
-  function sendComment(postId) {
-    const input = document.getElementById('comment-input-' + postId);
-    const text = input.value.trim();
-    if (!text) return;
-    const post = posts.find(p => p.id === postId);
-    post.comments.push({ user: currentUser, text });
-    input.value = '';
-    renderPosts();
-    document.getElementById('comments-' + postId).classList.add('open');
-  }
-
-  function createPost() {
-    const textarea = document.getElementById('post-text');
-    const text = textarea.value.trim();
-    if (!text) return;
-    posts.unshift({
-      id: Date.now(), userId: currentUser.id, text, image: null,
-      time: 'Agora', liked: false, likeCount: 0, comments: []
-    });
-    textarea.value = '';
-    currentUser.posts++;
-    document.getElementById('stat-posts').textContent = currentUser.posts;
-    renderPosts();
-    showToast('✅ Publicado com sucesso!');
-  }
-
-  function addEmoji() {
-    const textarea = document.getElementById('post-text');
-    textarea.value += EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
-  }
-
-  function addFakeImage() { showToast('📷 Imagem adicionada!'); }
 
   function renderStories() {
     const list = document.getElementById('stories-list');
-    list.innerHTML = [currentUser, ...SAMPLE_USERS].map(u => `
-      <div class="story-item" onclick="showToast('📖 Story de ${u.name}')">
-        <div class="story-ring"><img src="${u.avatar}" alt="${u.name}" /></div>
-        <span>${u.id === 1 ? 'Seu story' : u.name.split(' ')[0]}</span>
+    list.innerHTML = USERS.map(u => `
+      <div class="story-item">
+        <div class="story-ring">${createAvatarHTML(u.initial, 'avatar-sm')}</div>
+        <span>${u.name.split(' ')[0]}</span>
       </div>
     `).join('');
   }
 
   function renderSuggestions() {
     const list = document.getElementById('suggestions-list');
-    list.innerHTML = SAMPLE_USERS.slice(0, 4).map(u => `
+    list.innerHTML = USERS.map(u => `
       <div class="suggestion-item">
-        <img src="${u.avatar}" alt="${u.name}" onclick="openProfileModal(SAMPLE_USERS.find(x=>x.id===${u.id}))" style="cursor:pointer" />
-        <div class="sinfo"><div class="sname">${u.name}</div><div class="smutual">Vibe dourada</div></div>
-        <button class="btn-follow" id="follow-btn-${u.id}" onclick="toggleFollow(${u.id}, this)">${followingSet.has(u.id) ? 'Seguindo' : 'Seguir'}</button>
+        ${createAvatarHTML(u.initial)}
+        <div class="sinfo"><div class="sname">${u.name}</div><div class="smutual">Elite</div></div>
+        <button class="btn-follow">Seguir</button>
       </div>
     `).join('');
   }
 
-  function toggleFollow(userId, btn) {
-    if (followingSet.has(userId)) {
-      followingSet.delete(userId);
-      btn.textContent = 'Seguir';
-      btn.classList.remove('following');
-      currentUser.following--;
-    } else {
-      followingSet.add(userId);
-      btn.textContent = 'Seguindo';
-      btn.classList.add('following');
-      currentUser.following++;
-      showToast('✨ Seguindo!');
-    }
-    document.getElementById('stat-following').textContent = currentUser.following;
-  }
-
-  function renderTrending() {
-    const list = document.getElementById('trending-list');
-    list.innerHTML = TRENDING.map(t => `<div class="trend-item"><div class="tag">${t.tag}</div><div class="count">${t.count}</div></div>`).join('');
-  }
-
   function renderOnline() {
     const list = document.getElementById('online-list');
-    list.innerHTML = SAMPLE_USERS.map(u => `<div class="online-friend" title="${u.name}"><img src="${u.avatar}" /><span class="online-dot"></span></div>`).join('');
+    list.innerHTML = USERS.map(u => `
+      <div class="online-friend">
+        ${createAvatarHTML(u.initial)}
+        <span class="online-dot"></span>
+      </div>
+    `).join('');
   }
 
-  function openProfileModal(user) {
-    if (!user) return;
-    modalUser = user;
-    document.getElementById('modal-avatar-img').src = user.avatar;
-    document.getElementById('modal-name').textContent = user.name;
-    document.getElementById('modal-handle').textContent = '@' + user.handle;
-    document.getElementById('modal-bio').textContent = user.bio || '—';
-    document.getElementById('modal-posts').textContent = user.posts;
-    document.getElementById('modal-followers').textContent = user.followers;
-    document.getElementById('modal-following').textContent = user.following;
-    const btn = document.getElementById('modal-follow-btn');
-    if (user.id === 1) { btn.textContent = 'Editar Perfil'; } 
-    else {
-      const isFollowing = followingSet.has(user.id);
-      btn.textContent = isFollowing ? 'Seguindo' : 'Seguir';
-      btn.className = 'btn-post' + (isFollowing ? ' following' : '');
-    }
-    document.getElementById('profile-modal').classList.add('open');
+  function renderPosts() {
+    const container = document.getElementById('posts-container');
+    const samplePosts = [
+      { name: 'Ana Silva', initial: 'A', text: 'O silêncio é de ouro, mas o estilo é para sempre. ✨', icon: '💎' },
+      { name: 'Bruno Lux', initial: 'B', text: 'Apenas o essencial importa nesta rede social minimalista.', icon: '🦁' }
+    ];
+    container.innerHTML = samplePosts.map(p => `
+      <div class="post-card">
+        <div class="post-header">
+          ${createAvatarHTML(p.initial)}
+          <div class="meta"><div class="uname">${p.name}</div><div class="time">2h atrás</div></div>
+        </div>
+        <div class="post-body">${p.text}</div>
+        <div class="post-visual-placeholder">${p.icon}</div>
+        <div class="post-actions">
+          <button class="action-btn">❤️ Curtir</button>
+          <button class="action-btn">💬 Comentar</button>
+        </div>
+      </div>
+    `).join('');
   }
 
-  function closeProfileModal() { document.getElementById('profile-modal').classList.remove('open'); }
-
-  function toggleFollowModal() {
-    if (!modalUser || modalUser.id === 1) return;
-    toggleFollow(modalUser.id, document.getElementById('follow-btn-' + modalUser.id));
-    openProfileModal(modalUser);
+  function createPost() {
+    const txt = document.getElementById('post-text').value;
+    if(!txt) return;
+    const container = document.getElementById('posts-container');
+    const newPost = `
+      <div class="post-card">
+        <div class="post-header">
+          ${createAvatarHTML(currentUser.initial)}
+          <div class="meta"><div class="uname">${currentUser.name}</div><div class="time">Agora</div></div>
+        </div>
+        <div class="post-body">${txt}</div>
+        <div class="post-visual-placeholder">✨</div>
+        <div class="post-actions"><button class="action-btn">❤️ Curtir</button></div>
+      </div>
+    `;
+    container.insertAdjacentHTML('afterbegin', newPost);
+    document.getElementById('post-text').value = '';
+    showToast('✅ Mensagem enviada');
   }
 
-  function setMenu(el) {
-    document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
-    el.classList.add('active');
-  }
+  function addEmoji() { document.getElementById('post-text').value += '✨'; }
 
   function showToast(msg) {
     const container = document.getElementById('toast-container');
     const toast = document.createElement('div');
     toast.className = 'toast';
-    toast.textContent = msg;
+    toast.innerText = msg;
     container.appendChild(toast);
     setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 400); }, 3000);
   }
+
+  function closeModal() { document.getElementById('profile-modal').style.display = 'none'; }
 </script>
 </body>
 </html>
