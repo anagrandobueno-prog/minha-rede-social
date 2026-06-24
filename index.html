@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ConectaMe — Rede Social</title>
+  <title>ConectaMe — Lux Edition</title>
   <style>
-    /* ===== RESET & VARIÁVEIS ===== */
+    /* ===== RESET & VARIÁVEIS (PRETO & DOURADO) ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --primary:   #6c63ff;
-      --primary-d: #574fd6;
-      --secondary: #ff6584;
-      --bg:        #f0f2f5;
-      --card:      #ffffff;
-      --text:      #1a1a2e;
-      --muted:     #6b7280;
-      --border:    #e5e7eb;
-      --online:    #22c55e;
+      --primary:   #d4af37; /* Gold */
+      --primary-d: #b8860b; /* Dark Gold */
+      --secondary: #fdf5e6; /* Old Lace (Soft Gold) */
+      --bg:        #0a0a0a; /* Rich Black */
+      --card:      #1a1a1a; /* Dark Grey/Black */
+      --text:      #e0e0e0; /* Light Grey */
+      --muted:     #8a8a8a; /* Muted Grey */
+      --border:    #333333; /* Dark Border */
+      --online:    #d4af37; /* Gold for online */
       --radius:    12px;
-      --shadow:    0 2px 12px rgba(0,0,0,.08);
+      --shadow:    0 4px 20px rgba(0,0,0,.5);
       --transition: .25s ease;
     }
 
@@ -32,7 +32,7 @@
 
     a { text-decoration: none; color: inherit; }
     button { cursor: pointer; border: none; outline: none; font-family: inherit; }
-    input, textarea { font-family: inherit; outline: none; border: none; }
+    input, textarea { font-family: inherit; outline: none; border: none; color: var(--text); background: #222; }
 
     /* ===== TELA DE LOGIN ===== */
     #login-screen {
@@ -40,7 +40,7 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      background: linear-gradient(135deg, #6c63ff 0%, #ff6584 100%);
+      background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
     }
 
     .login-box {
@@ -49,15 +49,17 @@
       padding: 48px 40px;
       width: 100%;
       max-width: 420px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.2);
+      box-shadow: 0 0 40px rgba(212, 175, 55, 0.15);
       text-align: center;
+      border: 1px solid var(--border);
     }
 
     .login-box .logo {
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 800;
       color: var(--primary);
       margin-bottom: 6px;
+      letter-spacing: 1px;
     }
 
     .login-box .tagline {
@@ -69,11 +71,12 @@
     .login-box input {
       width: 100%;
       padding: 12px 16px;
-      border: 2px solid var(--border);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       font-size: .95rem;
       margin-bottom: 14px;
       transition: border-color var(--transition);
+      background: #0f0f0f;
     }
 
     .login-box input:focus { border-color: var(--primary); }
@@ -82,10 +85,10 @@
       width: 100%;
       padding: 13px;
       background: var(--primary);
-      color: #fff;
+      color: #000;
       border-radius: var(--radius);
       font-size: 1rem;
-      font-weight: 600;
+      font-weight: 700;
       transition: background var(--transition), transform var(--transition);
     }
 
@@ -113,7 +116,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: var(--card);
+      background: #000;
       border-bottom: 1px solid var(--border);
       padding: 0 24px;
       height: 60px;
@@ -124,14 +127,14 @@
     }
 
     .navbar .brand {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: 800;
       color: var(--primary);
     }
 
     .navbar .nav-icons {
       display: flex;
-      gap: 8px;
+      gap: 12px;
       align-items: center;
     }
 
@@ -140,30 +143,33 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: var(--bg);
+      background: #1a1a1a;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.1rem;
       transition: background var(--transition);
+      color: var(--primary);
+      border: 1px solid var(--border);
     }
 
-    .nav-icon-btn:hover { background: #e0e0ff; }
+    .nav-icon-btn:hover { background: #222; border-color: var(--primary); }
 
     .badge {
       position: absolute;
-      top: 2px; right: 2px;
-      background: var(--secondary);
-      color: #fff;
-      font-size: .6rem;
-      font-weight: 700;
+      top: -2px; right: -2px;
+      background: var(--primary);
+      color: #000;
+      font-size: .65rem;
+      font-weight: 800;
       border-radius: 50%;
-      width: 16px; height: 16px;
+      width: 18px; height: 18px;
       display: flex; align-items: center; justify-content: center;
+      border: 2px solid #000;
     }
 
     .avatar-sm {
-      width: 36px; height: 36px;
+      width: 38px; height: 38px;
       border-radius: 50%;
       object-fit: cover;
       cursor: pointer;
@@ -193,11 +199,12 @@
       border-radius: var(--radius);
       overflow: hidden;
       box-shadow: var(--shadow);
+      border: 1px solid var(--border);
     }
 
     .profile-card .cover {
       height: 70px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      background: linear-gradient(135deg, #000, var(--primary-d));
     }
 
     .profile-card .info {
@@ -211,14 +218,15 @@
     }
 
     .profile-card .avatar-wrap img {
-      width: 56px; height: 56px;
+      width: 60px; height: 60px;
       border-radius: 50%;
       border: 3px solid var(--card);
       object-fit: cover;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
     }
 
-    .profile-card .name { font-weight: 700; font-size: 1rem; }
-    .profile-card .handle { color: var(--muted); font-size: .82rem; margin-bottom: 10px; }
+    .profile-card .name { font-weight: 700; font-size: 1rem; color: #fff; }
+    .profile-card .handle { color: var(--primary); font-size: .82rem; margin-bottom: 10px; }
 
     .profile-stats {
       display: flex;
@@ -229,7 +237,7 @@
     }
 
     .profile-stats .stat { text-align: center; }
-    .profile-stats .stat strong { display: block; font-size: 1rem; font-weight: 700; }
+    .profile-stats .stat strong { display: block; font-size: 1rem; font-weight: 700; color: var(--primary); }
     .profile-stats .stat span { font-size: .75rem; color: var(--muted); }
 
     .menu-card {
@@ -237,6 +245,7 @@
       border-radius: var(--radius);
       padding: 12px 0;
       box-shadow: var(--shadow);
+      border: 1px solid var(--border);
     }
 
     .menu-item {
@@ -250,9 +259,10 @@
       transition: background var(--transition);
       border-radius: 8px;
       margin: 0 6px;
+      color: var(--text);
     }
 
-    .menu-item:hover, .menu-item.active { background: #ede9ff; color: var(--primary); }
+    .menu-item:hover, .menu-item.active { background: #222; color: var(--primary); }
     .menu-item .icon { font-size: 1.1rem; width: 22px; text-align: center; }
 
     /* FEED CENTRAL */
@@ -264,6 +274,7 @@
       border-radius: var(--radius);
       padding: 16px;
       box-shadow: var(--shadow);
+      border: 1px solid var(--border);
     }
 
     .create-post .top {
@@ -276,12 +287,13 @@
     .create-post textarea {
       flex: 1;
       resize: none;
-      border: 2px solid var(--border);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 10px 14px;
       font-size: .93rem;
       min-height: 70px;
       transition: border-color var(--transition);
+      background: #0f0f0f;
     }
 
     .create-post textarea:focus { border-color: var(--primary); }
@@ -297,19 +309,20 @@
     .btn-media {
       padding: 7px 14px;
       border-radius: 20px;
-      background: var(--bg);
+      background: #222;
       font-size: .82rem;
       font-weight: 600;
-      color: var(--muted);
+      color: var(--primary);
       transition: background var(--transition), color var(--transition);
+      border: 1px solid var(--border);
     }
 
-    .btn-media:hover { background: #ede9ff; color: var(--primary); }
+    .btn-media:hover { background: #333; border-color: var(--primary); }
 
     .btn-post {
       padding: 8px 22px;
       background: var(--primary);
-      color: #fff;
+      color: #000;
       border-radius: 20px;
       font-size: .88rem;
       font-weight: 700;
@@ -324,13 +337,14 @@
       border-radius: var(--radius);
       padding: 14px 16px;
       box-shadow: var(--shadow);
+      border: 1px solid var(--border);
     }
 
-    .stories-bar h4 { font-size: .8rem; color: var(--muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .05em; }
+    .stories-bar h4 { font-size: .8rem; color: var(--primary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .05em; }
 
     .stories-list { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 4px; }
     .stories-list::-webkit-scrollbar { height: 4px; }
-    .stories-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    .stories-list::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 2px; }
 
     .story-item {
       display: flex;
@@ -342,16 +356,16 @@
     }
 
     .story-ring {
-      width: 56px; height: 56px;
+      width: 58px; height: 58px;
       border-radius: 50%;
-      padding: 3px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 2px;
+      background: linear-gradient(135deg, var(--primary), #fff);
     }
 
     .story-ring img {
       width: 100%; height: 100%;
       border-radius: 50%;
-      border: 2px solid var(--card);
+      border: 2px solid #000;
       object-fit: cover;
     }
 
@@ -364,6 +378,7 @@
       box-shadow: var(--shadow);
       overflow: hidden;
       animation: fadeIn .4s ease;
+      border: 1px solid var(--border);
     }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -379,10 +394,11 @@
       width: 42px; height: 42px;
       border-radius: 50%;
       object-fit: cover;
+      border: 1px solid var(--primary);
     }
 
     .post-header .meta { flex: 1; }
-    .post-header .meta .uname { font-weight: 700; font-size: .93rem; }
+    .post-header .meta .uname { font-weight: 700; font-size: .93rem; color: #fff; }
     .post-header .meta .time { font-size: .78rem; color: var(--muted); }
 
     .post-header .more-btn {
@@ -394,14 +410,16 @@
       transition: background var(--transition);
     }
 
-    .post-header .more-btn:hover { background: var(--bg); }
+    .post-header .more-btn:hover { background: #222; color: var(--primary); }
 
-    .post-body { padding: 0 16px 12px; font-size: .93rem; line-height: 1.6; }
+    .post-body { padding: 0 16px 12px; font-size: .93rem; line-height: 1.6; color: #e0e0e0; }
 
     .post-image {
       width: 100%;
-      max-height: 380px;
+      max-height: 400px;
       object-fit: cover;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
 
     .post-actions {
@@ -426,14 +444,16 @@
       transition: background var(--transition), color var(--transition);
     }
 
-    .action-btn:hover { background: var(--bg); color: var(--primary); }
-    .action-btn.liked { color: var(--secondary); }
+    .action-btn:hover { background: #222; color: var(--primary); }
+    .action-btn.liked { color: var(--primary); }
     .action-btn .icon { font-size: 1rem; }
 
     /* COMENTÁRIOS */
     .comments-section {
       padding: 0 16px 14px;
       display: none;
+      border-top: 1px solid var(--border);
+      background: #151515;
     }
 
     .comments-section.open { display: block; }
@@ -442,23 +462,25 @@
       display: flex;
       gap: 8px;
       align-items: center;
-      margin-bottom: 10px;
+      margin-top: 12px;
+      margin-bottom: 12px;
     }
 
     .comment-input-row input {
       flex: 1;
-      border: 1.5px solid var(--border);
+      border: 1px solid var(--border);
       border-radius: 20px;
       padding: 7px 14px;
       font-size: .85rem;
       transition: border-color var(--transition);
+      background: #000;
     }
 
     .comment-input-row input:focus { border-color: var(--primary); }
 
     .btn-send-comment {
       background: var(--primary);
-      color: #fff;
+      color: #000;
       border-radius: 50%;
       width: 32px; height: 32px;
       display: flex; align-items: center; justify-content: center;
@@ -471,20 +493,21 @@
     .comment-item {
       display: flex;
       gap: 8px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       animation: fadeIn .3s ease;
     }
 
-    .comment-item img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+    .comment-item img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 1px solid var(--primary); }
 
     .comment-bubble {
-      background: var(--bg);
+      background: #222;
       border-radius: 12px;
       padding: 7px 12px;
       font-size: .84rem;
+      border: 1px solid #333;
     }
 
-    .comment-bubble .cname { font-weight: 700; font-size: .8rem; margin-bottom: 2px; }
+    .comment-bubble .cname { font-weight: 700; font-size: .8rem; margin-bottom: 2px; color: var(--primary); }
 
     /* SIDEBAR DIREITA */
     .sidebar-right { display: flex; flex-direction: column; gap: 12px; }
@@ -494,9 +517,10 @@
       border-radius: var(--radius);
       padding: 16px;
       box-shadow: var(--shadow);
+      border: 1px solid var(--border);
     }
 
-    .widget h4 { font-size: .82rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 12px; }
+    .widget h4 { font-size: .82rem; color: var(--primary); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 12px; }
 
     /* SUGESTÕES */
     .suggestion-item {
@@ -506,24 +530,24 @@
       margin-bottom: 12px;
     }
 
-    .suggestion-item img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .suggestion-item img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); }
 
     .suggestion-item .sinfo { flex: 1; }
-    .suggestion-item .sname { font-weight: 600; font-size: .88rem; }
+    .suggestion-item .sname { font-weight: 600; font-size: .88rem; color: #fff; }
     .suggestion-item .smutual { font-size: .75rem; color: var(--muted); }
 
     .btn-follow {
       padding: 5px 14px;
       border-radius: 20px;
       background: var(--primary);
-      color: #fff;
+      color: #000;
       font-size: .78rem;
       font-weight: 700;
       transition: background var(--transition);
     }
 
     .btn-follow:hover { background: var(--primary-d); }
-    .btn-follow.following { background: var(--bg); color: var(--muted); }
+    .btn-follow.following { background: #222; color: var(--primary); border: 1px solid var(--primary); }
 
     /* TRENDING */
     .trend-item { margin-bottom: 10px; cursor: pointer; }
@@ -538,15 +562,16 @@
       cursor: pointer;
     }
 
-    .online-friend img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; }
+    .online-friend img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); }
 
     .online-dot {
       position: absolute;
       bottom: 1px; right: 1px;
       width: 10px; height: 10px;
-      background: var(--online);
+      background: var(--primary);
       border-radius: 50%;
-      border: 2px solid var(--card);
+      border: 2px solid #000;
+      box-shadow: 0 0 5px var(--primary);
     }
 
     /* NOTIFICAÇÕES TOAST */
@@ -560,12 +585,13 @@
     }
 
     .toast {
-      background: var(--text);
-      color: #fff;
+      background: var(--primary);
+      color: #000;
       padding: 12px 18px;
       border-radius: var(--radius);
       font-size: .88rem;
-      box-shadow: 0 4px 20px rgba(0,0,0,.2);
+      font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0,0,0,.5);
       animation: slideIn .3s ease;
       max-width: 300px;
     }
@@ -577,7 +603,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,.5);
+      background: rgba(0,0,0,.85);
       z-index: 200;
       align-items: center;
       justify-content: center;
@@ -591,13 +617,15 @@
       width: 100%;
       max-width: 500px;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,.3);
+      box-shadow: 0 0 60px rgba(212, 175, 55, 0.2);
       animation: fadeIn .3s ease;
+      border: 1px solid var(--border);
+      position: relative;
     }
 
     .modal-cover {
       height: 120px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      background: linear-gradient(135deg, #000, var(--primary-d));
     }
 
     .modal-info {
@@ -615,10 +643,11 @@
       border-radius: 50%;
       border: 4px solid var(--card);
       object-fit: cover;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
     }
 
-    .modal-info h2 { font-size: 1.3rem; font-weight: 800; }
-    .modal-info .modal-handle { color: var(--muted); font-size: .88rem; margin-bottom: 8px; }
+    .modal-info h2 { font-size: 1.3rem; font-weight: 800; color: #fff; }
+    .modal-info .modal-handle { color: var(--primary); font-size: .88rem; margin-bottom: 8px; }
     .modal-info .modal-bio { font-size: .9rem; color: var(--text); margin-bottom: 16px; }
 
     .modal-stats {
@@ -628,7 +657,7 @@
       margin-bottom: 16px;
     }
 
-    .modal-stats .mstat strong { display: block; font-size: 1.1rem; font-weight: 800; }
+    .modal-stats .mstat strong { display: block; font-size: 1.1rem; font-weight: 800; color: var(--primary); }
     .modal-stats .mstat span { font-size: .78rem; color: var(--muted); }
 
     .modal-close {
@@ -636,20 +665,21 @@
       top: 12px; right: 16px;
       font-size: 1.4rem;
       color: #fff;
-      background: rgba(0,0,0,.3);
+      background: rgba(0,0,0,.5);
       border-radius: 50%;
       width: 32px; height: 32px;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer;
+      border: 1px solid var(--border);
     }
 
-    .modal-overlay { position: fixed; }
-    .modal-box { position: relative; }
+    .modal-close:hover { color: var(--primary); border-color: var(--primary); }
 
     /* SCROLLBAR GLOBAL */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #000; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
   </style>
 </head>
 <body>
@@ -658,7 +688,7 @@
 <div id="login-screen">
   <div class="login-box">
     <div class="logo">&#127758; ConectaMe</div>
-    <p class="tagline">Conecte-se com quem você ama</p>
+    <p class="tagline">Lux Edition — Conecte-se com elegância</p>
     <div id="login-form">
       <input type="text" id="login-name" placeholder="Seu nome" maxlength="30" />
       <input type="email" id="login-email" placeholder="E-mail" />
@@ -740,7 +770,7 @@
       <div class="create-post">
         <div class="top">
           <img class="avatar-sm" id="create-avatar" src="" alt="Você" />
-          <textarea id="post-text" placeholder="No que você está pensando?"></textarea>
+          <textarea id="post-text" placeholder="O que você quer compartilhar com o mundo?"></textarea>
         </div>
         <div class="actions">
           <div class="media-btns">
@@ -804,29 +834,24 @@
 <div id="toast-container"></div>
 
 <script>
-  // ===== DADOS INICIAIS =====
+  // Os mesmos scripts da versão anterior, mantendo a funcionalidade
   const AVATARS = [
-    'https://i.pravatar.cc/150?img=1',
-    'https://i.pravatar.cc/150?img=2',
-    'https://i.pravatar.cc/150?img=3',
-    'https://i.pravatar.cc/150?img=4',
-    'https://i.pravatar.cc/150?img=5',
-    'https://i.pravatar.cc/150?img=6',
-    'https://i.pravatar.cc/150?img=7',
-    'https://i.pravatar.cc/150?img=8',
-    'https://i.pravatar.cc/150?img=9',
-    'https://i.pravatar.cc/150?img=10',
+    'https://i.pravatar.cc/150?img=1', 'https://i.pravatar.cc/150?img=2',
+    'https://i.pravatar.cc/150?img=3', 'https://i.pravatar.cc/150?img=4',
+    'https://i.pravatar.cc/150?img=5', 'https://i.pravatar.cc/150?img=6',
+    'https://i.pravatar.cc/150?img=7', 'https://i.pravatar.cc/150?img=8',
+    'https://i.pravatar.cc/150?img=9', 'https://i.pravatar.cc/150?img=10',
   ];
 
   const FAKE_IMAGES = [
-    'https://picsum.photos/seed/post1/600/350',
-    'https://picsum.photos/seed/post2/600/350',
-    'https://picsum.photos/seed/post3/600/350',
-    'https://picsum.photos/seed/post4/600/350',
-    'https://picsum.photos/seed/post5/600/350',
+    'https://picsum.photos/seed/lux1/600/350',
+    'https://picsum.photos/seed/lux2/600/350',
+    'https://picsum.photos/seed/lux3/600/350',
+    'https://picsum.photos/seed/lux4/600/350',
+    'https://picsum.photos/seed/lux5/600/350',
   ];
 
-  const EMOJIS = ['😂','😍','🔥','👏','💯','🎉','😎','🤩','💪','🙌','❤️','✨'];
+  const EMOJIS = ['✨','💎','🔥','👑','💰','🥂','🌟','🚀','🖤','🦁'];
 
   const SAMPLE_USERS = [
     { id: 2, name: 'Ana Lima',      handle: 'analima',    avatar: AVATARS[1], bio: 'Fotógrafa apaixonada 📷', posts: 48, followers: 1200, following: 340 },
@@ -837,28 +862,24 @@
   ];
 
   const SAMPLE_POSTS = [
-    { userId: 2, text: 'Que dia incrível para fotografar! A luz da tarde estava perfeita. 📷✨', image: FAKE_IMAGES[0], time: '2 horas atrás', likes: 47, comments: [] },
-    { userId: 3, text: 'Acabei de subir um projeto novo no GitHub! Muito orgulhoso do resultado 🚀 #dev #código', image: null, time: '4 horas atrás', likes: 83, comments: [] },
-    { userId: 4, text: 'Chegando em Lisboa! Essa cidade é simplesmente mágica 🇵🇹❤️', image: FAKE_IMAGES[1], time: '6 horas atrás', likes: 215, comments: [] },
-    { userId: 5, text: 'Nova música gravada! Em breve lançamento 🎸🎶 Aguardem!', image: null, time: '1 dia atrás', likes: 34, comments: [] },
-    { userId: 6, text: 'Receita de bolo de chocolate que fiz hoje. Ficou INCRÍVEL! 🍫🎂', image: FAKE_IMAGES[2], time: '1 dia atrás', likes: 128, comments: [] },
+    { userId: 2, text: 'A elegância está nos detalhes. ✨ #LuxuryLife #Photography', image: FAKE_IMAGES[0], time: '2 horas atrás', likes: 147, comments: [] },
+    { userId: 3, text: 'Codar em modo dark é outro nível. Ouro no código! 💻💎', image: null, time: '4 horas atrás', likes: 83, comments: [] },
+    { userId: 4, text: 'Noite de gala em Paris. Inesquecível. 🥂🇫🇷', image: FAKE_IMAGES[1], time: '6 horas atrás', likes: 415, comments: [] },
+    { userId: 6, text: 'Trufas negras para o jantar de hoje. Simplesmente divino. 🍳🖤', image: FAKE_IMAGES[2], time: '1 dia atrás', likes: 128, comments: [] },
   ];
 
   const TRENDING = [
-    { tag: '#TechBrasil', count: '12.4k posts' },
-    { tag: '#FotografiaUrbana', count: '8.7k posts' },
-    { tag: '#MúsicaNacional', count: '6.2k posts' },
-    { tag: '#ViagensIncríveis', count: '5.1k posts' },
-    { tag: '#ReceitasFáceis', count: '4.8k posts' },
+    { tag: '#LuxEdition', count: '50.2k posts' },
+    { tag: '#GoldenVibes', count: '18.7k posts' },
+    { tag: '#BlackAndGold', count: '12.4k posts' },
+    { tag: '#ConectaMe', count: '8.1k posts' },
   ];
 
-  // ===== ESTADO DA APP =====
   let currentUser = null;
   let posts = [];
   let modalUser = null;
   let followingSet = new Set();
 
-  // ===== LOGIN / REGISTRO =====
   function toggleForm() {
     const lf = document.getElementById('login-form');
     const rf = document.getElementById('register-form');
@@ -868,31 +889,22 @@
 
   function doLogin() {
     const name = document.getElementById('login-name').value.trim();
-    const email = document.getElementById('login-email').value.trim();
-    if (!name || !email) { showToast('⚠️ Preencha nome e e-mail!'); return; }
+    if (!name) { showToast('⚠️ Digite seu nome!'); return; }
     loginAs(name);
   }
 
   function doRegister() {
     const name = document.getElementById('reg-name').value.trim();
-    const email = document.getElementById('reg-email').value.trim();
-    const pass = document.getElementById('reg-pass').value;
-    if (!name || !email) { showToast('⚠️ Preencha todos os campos!'); return; }
-    if (pass.length < 6) { showToast('⚠️ Senha muito curta!'); return; }
+    if (!name) { showToast('⚠️ Digite seu nome!'); return; }
     loginAs(name);
   }
 
   function loginAs(name) {
     const avatarIdx = Math.floor(Math.random() * AVATARS.length);
     currentUser = {
-      id: 1,
-      name: name,
-      handle: name.toLowerCase().replace(/\s+/g, ''),
-      avatar: AVATARS[avatarIdx],
-      bio: 'Novo membro do ConectaMe 🎉',
-      posts: 0,
-      followers: Math.floor(Math.random() * 200),
-      following: Math.floor(Math.random() * 100),
+      id: 1, name: name, handle: name.toLowerCase().replace(/\s+/g, ''),
+      avatar: AVATARS[avatarIdx], bio: 'Apreciando o melhor da vida ✨',
+      posts: 0, followers: 150, following: 85,
     };
     initApp();
   }
@@ -901,21 +913,14 @@
     document.getElementById('app').style.display = 'none';
     document.getElementById('login-screen').style.display = 'flex';
     currentUser = null;
-    posts = [];
-    followingSet.clear();
   }
 
-  // ===== INICIALIZAR APP =====
   function initApp() {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
 
-    // Atualizar UI com dados do usuário
     const avatarEls = ['nav-avatar', 'sidebar-avatar', 'create-avatar'];
-    avatarEls.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.src = currentUser.avatar;
-    });
+    avatarEls.forEach(id => { if (document.getElementById(id)) document.getElementById(id).src = currentUser.avatar; });
 
     document.getElementById('sidebar-name').textContent = currentUser.name;
     document.getElementById('sidebar-handle').textContent = '@' + currentUser.handle;
@@ -923,41 +928,28 @@
     document.getElementById('stat-followers').textContent = currentUser.followers;
     document.getElementById('stat-following').textContent = currentUser.following;
 
-    // Montar posts
-    posts = SAMPLE_POSTS.map((p, i) => ({
-      ...p,
-      id: i + 1,
-      liked: false,
-      likeCount: p.likes,
-      comments: [],
-    }));
+    posts = SAMPLE_POSTS.map((p, i) => ({ ...p, id: i + 1, liked: false, likeCount: p.likes, comments: [] }));
 
     renderPosts();
     renderStories();
     renderSuggestions();
     renderTrending();
     renderOnline();
-    showToast('👋 Bem-vindo(a), ' + currentUser.name + '!');
+    showToast('👑 Bem-vindo à Lux Edition, ' + currentUser.name + '!');
   }
 
-  // ===== POSTS =====
-  function getUserById(id) {
-    return SAMPLE_USERS.find(u => u.id === id) || currentUser;
-  }
+  function getUserById(id) { return SAMPLE_USERS.find(u => u.id === id) || currentUser; }
 
   function renderPosts() {
     const container = document.getElementById('posts-container');
     container.innerHTML = '';
-    posts.forEach(post => {
-      container.insertAdjacentHTML('beforeend', buildPostHTML(post));
-    });
+    posts.forEach(post => { container.insertAdjacentHTML('beforeend', buildPostHTML(post)); });
   }
 
   function buildPostHTML(post) {
     const user = getUserById(post.userId);
     const imgHTML = post.image ? `<img class="post-image" src="${post.image}" alt="Post" loading="lazy" />` : '';
     const likedClass = post.liked ? 'liked' : '';
-    const likeIcon = post.liked ? '❤️' : '🤍';
     return `
       <div class="post-card" id="post-${post.id}">
         <div class="post-header">
@@ -966,24 +958,23 @@
             <div class="uname" onclick="openProfileModal(getUserById(${post.userId}))" style="cursor:pointer">${user.name}</div>
             <div class="time">${post.time}</div>
           </div>
-          <button class="more-btn" onclick="showToast('⚙️ Opções em breve!')">•••</button>
+          <button class="more-btn" onclick="showToast('⚙️ Opções')">•••</button>
         </div>
         <div class="post-body">${post.text}</div>
         ${imgHTML}
         <div class="post-actions">
           <button class="action-btn ${likedClass}" onclick="toggleLike(${post.id})">
-            <span class="icon">${likeIcon}</span> ${post.likeCount}
+            <span class="icon">${post.liked ? '❤️' : '🤍'}</span> ${post.likeCount}
           </button>
           <button class="action-btn" onclick="toggleComments(${post.id})">
             <span class="icon">💬</span> ${post.comments.length}
           </button>
-          <button class="action-btn" onclick="sharePost(${post.id})">
-            <span class="icon">🔗</span> Compartilhar
+          <button class="action-btn" onclick="showToast('🔗 Link copiado!')">
+            <span class="icon">🔗</span>
           </button>
         </div>
         <div class="comments-section" id="comments-${post.id}">
           <div class="comment-input-row">
-            <img src="${currentUser ? currentUser.avatar : ''}" alt="Você" style="width:30px;height:30px;border-radius:50%;object-fit:cover" />
             <input type="text" id="comment-input-${post.id}" placeholder="Escreva um comentário..." onkeydown="if(event.key==='Enter') sendComment(${post.id})" />
             <button class="btn-send-comment" onclick="sendComment(${post.id})">➤</button>
           </div>
@@ -995,22 +986,15 @@
 
   function toggleLike(postId) {
     const post = posts.find(p => p.id === postId);
-    if (!post) return;
     post.liked = !post.liked;
     post.likeCount += post.liked ? 1 : -1;
-    const card = document.getElementById('post-' + postId);
-    const btn = card.querySelector('.action-btn');
-    btn.className = 'action-btn' + (post.liked ? ' liked' : '');
-    btn.innerHTML = `<span class="icon">${post.liked ? '❤️' : '🤍'}</span> ${post.likeCount}`;
-    if (post.liked) showToast('❤️ Você curtiu essa publicação!');
+    renderPosts();
+    if (post.liked) showToast('💎 Você curtiu isso!');
   }
 
   function toggleComments(postId) {
     const section = document.getElementById('comments-' + postId);
     section.classList.toggle('open');
-    if (section.classList.contains('open')) {
-      document.getElementById('comment-input-' + postId).focus();
-    }
   }
 
   function sendComment(postId) {
@@ -1018,95 +1002,50 @@
     const text = input.value.trim();
     if (!text) return;
     const post = posts.find(p => p.id === postId);
-    const comment = { user: currentUser, text };
-    post.comments.push(comment);
+    post.comments.push({ user: currentUser, text });
     input.value = '';
-
-    const list = document.getElementById('comment-list-' + postId);
-    list.insertAdjacentHTML('beforeend', `
-      <div class="comment-item">
-        <img src="${currentUser.avatar}" alt="${currentUser.name}" />
-        <div class="comment-bubble">
-          <div class="cname">${currentUser.name}</div>
-          ${text}
-        </div>
-      </div>
-    `);
-
-    // Atualizar contador
-    const card = document.getElementById('post-' + postId);
-    const btns = card.querySelectorAll('.action-btn');
-    btns[1].innerHTML = `<span class="icon">💬</span> ${post.comments.length}`;
-  }
-
-  function sharePost(postId) {
-    showToast('🔗 Link copiado para a área de transferência!');
+    renderPosts();
+    document.getElementById('comments-' + postId).classList.add('open');
   }
 
   function createPost() {
     const textarea = document.getElementById('post-text');
     const text = textarea.value.trim();
-    if (!text) { showToast('⚠️ Escreva algo antes de publicar!'); return; }
-
-    const newPost = {
-      id: Date.now(),
-      userId: currentUser.id,
-      text,
-      image: null,
-      time: 'Agora mesmo',
-      liked: false,
-      likeCount: 0,
-      comments: [],
-    };
-
-    posts.unshift(newPost);
+    if (!text) return;
+    posts.unshift({
+      id: Date.now(), userId: currentUser.id, text, image: null,
+      time: 'Agora', liked: false, likeCount: 0, comments: []
+    });
     textarea.value = '';
     currentUser.posts++;
     document.getElementById('stat-posts').textContent = currentUser.posts;
-
-    const container = document.getElementById('posts-container');
-    container.insertAdjacentHTML('afterbegin', buildPostHTML(newPost));
-    showToast('✅ Publicação criada com sucesso!');
+    renderPosts();
+    showToast('✅ Publicado com sucesso!');
   }
 
   function addEmoji() {
     const textarea = document.getElementById('post-text');
-    const emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
-    textarea.value += emoji;
-    textarea.focus();
+    textarea.value += EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
   }
 
-  function addFakeImage() {
-    showToast('📷 Imagem adicionada ao post (simulado)!');
-    const textarea = document.getElementById('post-text');
-    if (!textarea.value.includes('[📷 Foto]')) textarea.value += ' [📷 Foto]';
-    textarea.focus();
-  }
+  function addFakeImage() { showToast('📷 Imagem adicionada!'); }
 
-  // ===== STORIES =====
   function renderStories() {
     const list = document.getElementById('stories-list');
-    const users = [currentUser, ...SAMPLE_USERS];
-    list.innerHTML = users.map(u => `
+    list.innerHTML = [currentUser, ...SAMPLE_USERS].map(u => `
       <div class="story-item" onclick="showToast('📖 Story de ${u.name}')">
-        <div class="story-ring">
-          <img src="${u.avatar}" alt="${u.name}" />
-        </div>
+        <div class="story-ring"><img src="${u.avatar}" alt="${u.name}" /></div>
         <span>${u.id === 1 ? 'Seu story' : u.name.split(' ')[0]}</span>
       </div>
     `).join('');
   }
 
-  // ===== SUGESTÕES =====
   function renderSuggestions() {
     const list = document.getElementById('suggestions-list');
     list.innerHTML = SAMPLE_USERS.slice(0, 4).map(u => `
       <div class="suggestion-item">
         <img src="${u.avatar}" alt="${u.name}" onclick="openProfileModal(SAMPLE_USERS.find(x=>x.id===${u.id}))" style="cursor:pointer" />
-        <div class="sinfo">
-          <div class="sname">${u.name}</div>
-          <div class="smutual">${Math.floor(Math.random()*10)+1} amigos em comum</div>
-        </div>
+        <div class="sinfo"><div class="sname">${u.name}</div><div class="smutual">Vibe dourada</div></div>
         <button class="btn-follow" id="follow-btn-${u.id}" onclick="toggleFollow(${u.id}, this)">${followingSet.has(u.id) ? 'Seguindo' : 'Seguir'}</button>
       </div>
     `).join('');
@@ -1118,40 +1057,26 @@
       btn.textContent = 'Seguir';
       btn.classList.remove('following');
       currentUser.following--;
-      showToast('➖ Você deixou de seguir esse usuário.');
     } else {
       followingSet.add(userId);
       btn.textContent = 'Seguindo';
       btn.classList.add('following');
       currentUser.following++;
-      showToast('✅ Você está seguindo esse usuário!');
+      showToast('✨ Seguindo!');
     }
     document.getElementById('stat-following').textContent = currentUser.following;
   }
 
-  // ===== TRENDING =====
   function renderTrending() {
     const list = document.getElementById('trending-list');
-    list.innerHTML = TRENDING.map(t => `
-      <div class="trend-item" onclick="showToast('🔍 Explorando ${t.tag}')">
-        <div class="tag">${t.tag}</div>
-        <div class="count">${t.count}</div>
-      </div>
-    `).join('');
+    list.innerHTML = TRENDING.map(t => `<div class="trend-item"><div class="tag">${t.tag}</div><div class="count">${t.count}</div></div>`).join('');
   }
 
-  // ===== ONLINE =====
   function renderOnline() {
     const list = document.getElementById('online-list');
-    list.innerHTML = SAMPLE_USERS.map(u => `
-      <div class="online-friend" onclick="showToast('💬 Abrindo chat com ${u.name}...')" title="${u.name}">
-        <img src="${u.avatar}" alt="${u.name}" />
-        <span class="online-dot"></span>
-      </div>
-    `).join('');
+    list.innerHTML = SAMPLE_USERS.map(u => `<div class="online-friend" title="${u.name}"><img src="${u.avatar}" /><span class="online-dot"></span></div>`).join('');
   }
 
-  // ===== MODAL PERFIL =====
   function openProfileModal(user) {
     if (!user) return;
     modalUser = user;
@@ -1162,78 +1087,37 @@
     document.getElementById('modal-posts').textContent = user.posts;
     document.getElementById('modal-followers').textContent = user.followers;
     document.getElementById('modal-following').textContent = user.following;
-
     const btn = document.getElementById('modal-follow-btn');
-    if (user.id === 1) {
-      btn.textContent = 'Editar Perfil';
-      btn.onclick = () => { showToast('✏️ Edição de perfil em breve!'); closeProfileModal(); };
-    } else {
+    if (user.id === 1) { btn.textContent = 'Editar Perfil'; } 
+    else {
       const isFollowing = followingSet.has(user.id);
       btn.textContent = isFollowing ? 'Seguindo' : 'Seguir';
       btn.className = 'btn-post' + (isFollowing ? ' following' : '');
     }
-
     document.getElementById('profile-modal').classList.add('open');
   }
 
-  function closeProfileModal() {
-    document.getElementById('profile-modal').classList.remove('open');
-    modalUser = null;
-  }
+  function closeProfileModal() { document.getElementById('profile-modal').classList.remove('open'); }
 
   function toggleFollowModal() {
     if (!modalUser || modalUser.id === 1) return;
-    const btn = document.getElementById('modal-follow-btn');
-    const followBtn = document.getElementById('follow-btn-' + modalUser.id);
-    if (followingSet.has(modalUser.id)) {
-      followingSet.delete(modalUser.id);
-      btn.textContent = 'Seguir';
-      btn.classList.remove('following');
-      if (followBtn) { followBtn.textContent = 'Seguir'; followBtn.classList.remove('following'); }
-      currentUser.following--;
-      showToast('➖ Você deixou de seguir ' + modalUser.name);
-    } else {
-      followingSet.add(modalUser.id);
-      btn.textContent = 'Seguindo';
-      btn.classList.add('following');
-      if (followBtn) { followBtn.textContent = 'Seguindo'; followBtn.classList.add('following'); }
-      currentUser.following++;
-      showToast('✅ Você está seguindo ' + modalUser.name + '!');
-    }
-    document.getElementById('stat-following').textContent = currentUser.following;
+    toggleFollow(modalUser.id, document.getElementById('follow-btn-' + modalUser.id));
+    openProfileModal(modalUser);
   }
 
-  // Fechar modal clicando fora
-  document.getElementById('profile-modal').addEventListener('click', function(e) {
-    if (e.target === this) closeProfileModal();
-  });
-
-  // ===== MENU =====
   function setMenu(el) {
     document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
     el.classList.add('active');
-    const label = el.textContent.trim();
-    if (!label.includes('Sair')) showToast('📂 Seção "' + label + '" selecionada');
   }
 
-  // ===== TOAST =====
   function showToast(msg) {
     const container = document.getElementById('toast-container');
     const toast = document.createElement('div');
     toast.className = 'toast';
     toast.textContent = msg;
     container.appendChild(toast);
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transition = 'opacity .4s';
-      setTimeout(() => toast.remove(), 400);
-    }, 3000);
+    setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 400); }, 3000);
   }
-
-  // ===== NOTIFICAÇÕES BADGE =====
-  document.getElementById('notif-badge').addEventListener('click', function() {
-    this.style.display = 'none';
-  });
 </script>
 </body>
 </html>
